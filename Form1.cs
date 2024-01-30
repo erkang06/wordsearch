@@ -221,21 +221,21 @@ namespace wordsearch
     }
 
     private void printButton_Click(object sender, EventArgs e)
-    {
-      if (printDialog1.ShowDialog() == DialogResult.OK)
       {
         printButton.Visible = false;
         Graphics myGraphics = this.CreateGraphics();
         Size s = this.Size;
         memoryImage = new Bitmap(s.Width - 20, s.Height - 45, myGraphics);
         Graphics memoryGraphics = Graphics.FromImage(memoryImage);
-        memoryGraphics.CopyFromScreen(this.Location.X + 10, this.Location.Y + 33, 0, 0, s);
-        printDocument1.Print();
+        if (printDialog1.ShowDialog() == DialogResult.OK)
+        {
+          memoryGraphics.CopyFromScreen(this.Location.X + 10, this.Location.Y + 33, 0, 0, s);
+          printDocument1.Print();
+        }
         printButton.Visible = true;
         this.BackColor = SystemColors.Control;
+        this.ActiveControl = null;
       }
-      this.ActiveControl = null;
-    }
 
     private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
     {
