@@ -225,8 +225,6 @@ namespace wordsearch
       if (printDialog1.ShowDialog() == DialogResult.OK)
       {
         printButton.Visible = false;
-        this.BackColor = Color.White;
-        this.Refresh();
         Graphics myGraphics = this.CreateGraphics();
         Size s = this.Size;
         memoryImage = new Bitmap(s.Width - 20, s.Height - 45, myGraphics);
