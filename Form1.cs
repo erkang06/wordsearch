@@ -38,7 +38,7 @@ namespace wordsearch
           intInput = Convert.ToInt32(input);
           if (intInput < 5 || intInput > 20)
           {
-            MessageBox.Show("Input not within specified range, try again");
+            MessageBox.Show("Input not within specified range, try again", "Wordsearch");
           }
         }
         catch
@@ -49,7 +49,7 @@ namespace wordsearch
           }
           else
           {
-            MessageBox.Show("Input not a number, try again");
+            MessageBox.Show("Input not a number, try again", "Wordsearch");
           }
         }
       } while (intInput < 5 || intInput > 20);
@@ -242,7 +242,7 @@ namespace wordsearch
               }
               if (allWordsFound) // checks if all words have been found
               {
-                MessageBox.Show("You found all the words!");
+                MessageBox.Show("You found all the words!", "Wordsearch");
                 this.Close();
               }
             }
