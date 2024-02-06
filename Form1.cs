@@ -5,26 +5,54 @@ using System.Runtime.CompilerServices;
 using System.Drawing.Printing;
 using System.Windows.Forms;
 using wordsearch.Properties;
+using Microsoft.VisualBasic;
 
 namespace wordsearch
 {
   public partial class Form1 : Form
   {
     Random random = new Random();
-    System.Windows.Forms.Button[] btnArray = new System.Windows.Forms.Button[225];
-    System.Windows.Forms.Label[] labelArray = new System.Windows.Forms.Label[10];
-    string[,] wordsearchLetterGrid = new string[15, 15];
+    System.Windows.Forms.Button[] btnArray = new System.Windows.Forms.Button[225]; // wordsearch grid
+    System.Windows.Forms.Label[] labelArray; // shows words to find
+    string[,] wordsearchLetterGrid = new string[15, 15]; // actual letters per button
     Font wordSearchFont = new System.Drawing.Font("Trebuchet MS", 20F);
     Font listFont = new System.Drawing.Font("Trebuchet MS", 14F);
-    string[] wordsUsed = new string[10];
-    int[] orientations = { -16, -15, -14, -1, 1, 14, 15, 16 };
-    List<int> buttonsClicked = new List<int>();
+    string[] wordsUsed; // words acc in the wordsearch grid
+    int[] orientations = { -16, -15, -14, -1, 1, 14, 15, 16 }; // all the orientations that the word could be in
+    List<int> buttonsClicked = new List<int>(); // letters that have been selected on the grid
     Bitmap memoryImage; // printy bit
     public Form1()
     {
       InitializeComponent();
     }
 
+    void HowManyWords()
+    {
+      string input;
+      int intInput = 0;
+      do
+      {
+        input = Microsoft.VisualBasic.Interaction.InputBox("How many words would you like in your wordsearch?\nChoose between 5-15", "Wordsearch", "10");
+        try
+        {
+          intInput = Convert.ToInt32(input);
+          if (intInput < 5 || intInput > 15)
+          {
+            MessageBox.Show("Input not within specified range, try again");
+          }
+        }
+        catch
+        {
+          if (input == "")
+          {
+            intInput = 10;
+          }
+          MessageBox.Show("Input not a number, try again");
+        }
+      } while (intInput < 5 || intInput > 15);
+      wordsUsed = new string[intInput];
+      labelArray = new System.Windows.Forms.Label[intInput];
+    }
     void BoardSetUp()
     {
       int xPos = 0;
@@ -115,18 +143,18 @@ namespace wordsearch
     {
       int xPos = 10;
       int yPos = 610;
-      for (int n = 0; n < 10; n++)
+      for (int n = 0; n < labelArray.Length; n++)
       {
         labelArray[n] = new System.Windows.Forms.Label();
         labelArray[n].Text = wordsUsed[n];
-        labelArray[n].Width = 150;
+        labelArray[n].Width = 120;
         labelArray[n].Height = 30;
         labelArray[n].Left = xPos;
         labelArray[n].Top = yPos;
         labelArray[n].TabStop = false;
         labelArray[n].Font = listFont;
         yPos += labelArray[n].Height;
-        if (n == 4)
+        if ((n+1) % 5 == 0)
         {
           yPos = 610;
           xPos += labelArray[n].Width;
@@ -135,9 +163,9 @@ namespace wordsearch
       }
     }
 
-    private void Form1_Load(object sender, EventArgs e)
+    private void Form1_Load(object sender, EventArgs e) // FORM LOAD RIGHT HERE
     {
-      Extensions.GetColour();
+      HowManyWords();
       BoardSetUp();
       InsertWords();
       InsertWordsToFind();
@@ -198,7 +226,7 @@ namespace wordsearch
               }
               buttonsClicked.Clear();
               int index = Array.IndexOf(wordsUsed, wordFound);
-              labelArray[index].Text = null;
+              labelArray[index].ForeColor = Color.Red;
               wordsUsed[index] = "";
               bool allWordsFound = true;
               foreach (string word in wordsUsed)
@@ -248,7 +276,7 @@ namespace wordsearch
     static string[] colours = Resources.colours.Split("\n");
     public static string GetLetter()
     {
-      // This method returns a random lowercase letter.
+      // This method returns a random uppercase letter.
       // ... Between 'a' and 'z' inclusive.
       int num = random.Next(0, 26); // Zero to 25
       char let = (char)('A' + num);
