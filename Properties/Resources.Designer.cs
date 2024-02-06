@@ -61,9 +61,13 @@ namespace wordsearch.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AliceBlue
-        ///Beige
+        ///   Looks up a localized string similar to Aqua
+        ///Blue
+        ///BlueViolet
+        ///Chartreuse
         ///Chocolate
+        ///Coral
+        ///Crimson
         ///Cyan
         ///DarkBlue
         ///DarkGreen
@@ -74,25 +78,40 @@ namespace wordsearch.Properties {
         ///Gold
         ///Green
         ///GreenYellow
-        ///Honeydew
         ///HotPink
         ///Indigo
-        ///Lavender
+        ///LawnGreen
+        ///LightGreen
         ///LightPink
         ///LightSalmon
         ///Lime
+        ///Magenta
+        ///MediumSlateBlue
+        ///MediumSpringGreen
+        ///MidnightBlue
         ///Navy
         ///Olive
         ///Orange
+        ///OrangeRed
         ///Orchid
+        ///PaleGreen
+        ///PaleVioletRed
+        ///Peru
+        ///Pink
         ///Purple
         ///Red
+        ///RoyalBlue
         ///SeaGreen
+        ///Sienna
+        ///SkyBlue
+        ///SlateBlue
         ///Tan
         ///Teal
+        ///Tomato
         ///Turquoise
         ///Violet
-        ///Wheat.
+        ///Yellow
+        ///YellowGreen.
         /// </summary>
         internal static string colours {
             get {
@@ -120,18 +139,37 @@ namespace wordsearch.Properties {
         ///usage
         ///privilege
         ///respect
-        ///remainder
         ///retainer
         ///vulva
         ///jester
         ///christening
         ///xoxo
         ///shrek
-        ///potatoes
+        ///potato
         ///vanessa
         ///kingdom
         ///treasure
-        ///seventeen.
+        ///seventeen
+        ///zamn
+        ///forensic
+        ///data
+        ///stairs
+        ///celery
+        ///janet
+        ///quirky
+        ///aquamarine
+        ///khake
+        ///chiffon
+        ///lavender
+        ///golden
+        ///power
+        ///papaya
+        ///spring
+        ///tomato
+        ///olive
+        ///salmon
+        ///ivory
+        ///beige.
         /// </summary>
         internal static string words {
             get {
