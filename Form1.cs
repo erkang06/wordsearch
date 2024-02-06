@@ -32,24 +32,27 @@ namespace wordsearch
       int intInput = 0;
       do
       {
-        input = Microsoft.VisualBasic.Interaction.InputBox("How many words would you like in your wordsearch?\nChoose between 5-15", "Wordsearch", "10");
+        input = Microsoft.VisualBasic.Interaction.InputBox("How many words would you like in your wordsearch?\nChoose between 5-20", "Wordsearch", "10");
         try
         {
           intInput = Convert.ToInt32(input);
-          if (intInput < 5 || intInput > 15)
+          if (intInput < 5 || intInput > 20)
           {
             MessageBox.Show("Input not within specified range, try again");
           }
         }
         catch
         {
-          if (input == "")
+          if (input == null || input == "") // basos idc if u wanna play or not ur gonna make a board
           {
             intInput = 10;
           }
-          MessageBox.Show("Input not a number, try again");
+          else
+          {
+            MessageBox.Show("Input not a number, try again");
+          }
         }
-      } while (intInput < 5 || intInput > 15);
+      } while (intInput < 5 || intInput > 20);
       wordsUsed = new string[intInput];
       labelArray = new System.Windows.Forms.Label[intInput];
     }
@@ -142,7 +145,7 @@ namespace wordsearch
     void InsertWordsToFind()
     {
       int xPos = 10;
-      int yPos = 610;
+      int yPos = 605;
       for (int n = 0; n < labelArray.Length; n++)
       {
         labelArray[n] = new System.Windows.Forms.Label();
@@ -156,7 +159,7 @@ namespace wordsearch
         yPos += labelArray[n].Height;
         if ((n+1) % 5 == 0)
         {
-          yPos = 610;
+          yPos = 605;
           xPos += labelArray[n].Width;
         }
         this.Controls.Add(labelArray[n]);
