@@ -244,7 +244,6 @@ namespace wordsearch
               if (allWordsFound) // checks if all words have been found
               {
                 MessageBox.Show("You found all the words!", "Wordsearch");
-                this.Close();
               }
             }
           }
