@@ -32,11 +32,11 @@ namespace wordsearch
       int intInput = 0;
       do
       {
-        input = Microsoft.VisualBasic.Interaction.InputBox("How many words would you like in your wordsearch?\nChoose between 5-20", "Wordsearch", "10");
+        input = Microsoft.VisualBasic.Interaction.InputBox("How many words would you like in your wordsearch?\nChoose between 5-15", "Wordsearch", "10");
         try
         {
           intInput = Convert.ToInt32(input);
-          if (intInput < 5 || intInput > 20)
+          if (intInput < 5 || intInput > 15)
           {
             MessageBox.Show("Input not within specified range, try again", "Wordsearch");
           }
@@ -52,14 +52,14 @@ namespace wordsearch
             MessageBox.Show("Input not a number, try again", "Wordsearch");
           }
         }
-      } while (intInput < 5 || intInput > 20);
+      } while (intInput < 5 || intInput > 15);
       wordsUsed = new string[intInput];
       labelArray = new System.Windows.Forms.Label[intInput];
     }
     void BoardSetUp()
     {
       int xPos = 0;
-      int yPos = 0;
+      int yPos = 25;
       for (int n = 0; n < 225; n++)
       {
         btnArray[n] = new System.Windows.Forms.Button();
@@ -142,24 +142,24 @@ namespace wordsearch
       }
     }
 
-    void InsertWordsToFind()
+    void InsertWordsToFind() // basos the list of words you wanna find at the bottom of a wordsearch yk
     {
-      int xPos = 10;
-      int yPos = 605;
+      int xPos = 20;
+      int yPos = 630;
       for (int n = 0; n < labelArray.Length; n++)
       {
         labelArray[n] = new System.Windows.Forms.Label();
         labelArray[n].Text = wordsUsed[n];
-        labelArray[n].Width = 120;
+        labelArray[n].Width = 150;
         labelArray[n].Height = 30;
         labelArray[n].Left = xPos;
         labelArray[n].Top = yPos;
         labelArray[n].TabStop = false;
         labelArray[n].Font = listFont;
         yPos += labelArray[n].Height;
-        if ((n+1) % 5 == 0)
+        if ((n + 1) % 5 == 0) // 5 words a column so it doesnt go off the app
         {
-          yPos = 605;
+          yPos = 630;
           xPos += labelArray[n].Width;
         }
         this.Controls.Add(labelArray[n]);
@@ -168,10 +168,11 @@ namespace wordsearch
 
     private void Form1_Load(object sender, EventArgs e) // FORM LOAD RIGHT HERE
     {
+      MessageBox.Show("Welcome to my objectively bad wordsearch", "Wordsearch");
       HowManyWords();
       BoardSetUp();
       InsertWords();
-      InsertWordsToFind();
+      InsertWordsToFind(); // i was gonna just redirect this to the generate button but its too much faff lmao
     }
 
     public void ClickButton(Object sender, MouseEventArgs e)
@@ -252,25 +253,47 @@ namespace wordsearch
     }
 
     private void printButton_Click(object sender, EventArgs e)
+    {
+      this.BackColor = Color.White;
+      Graphics myGraphics = this.CreateGraphics();
+      Size s = this.Size;
+      memoryImage = new Bitmap(s.Width - 20, s.Height - 70, myGraphics);
+      Graphics memoryGraphics = Graphics.FromImage(memoryImage);
+      if (printDialog1.ShowDialog() == DialogResult.OK)
       {
-        printButton.Visible = false;
-        Graphics myGraphics = this.CreateGraphics();
-        Size s = this.Size;
-        memoryImage = new Bitmap(s.Width - 20, s.Height - 45, myGraphics);
-        Graphics memoryGraphics = Graphics.FromImage(memoryImage);
-        if (printDialog1.ShowDialog() == DialogResult.OK)
-        {
-          memoryGraphics.CopyFromScreen(this.Location.X + 10, this.Location.Y + 33, 0, 0, s);
-          printDocument1.Print();
-        }
-        printButton.Visible = true;
-        this.BackColor = SystemColors.Control;
-        this.ActiveControl = null;
+        memoryGraphics.CopyFromScreen(this.Location.X + 10, this.Location.Y + 58, 0, 0, s); // too much maffs dont talk abt it
+        try { printDocument1.Print(); }
+        catch { MessageBox.Show("Wordsearch wasn't able to print", "Wordsearch"); }
       }
+      this.BackColor = SystemColors.Control;
+      this.ActiveControl = null;
+    }
 
     private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
     {
       e.Graphics.DrawImage(memoryImage, 100, 100);
+    }
+
+    private void helpButton_Click(object sender, EventArgs e)
+    {
+      MessageBox.Show(Resources.helpsheet, "Wordsearch");
+      this.ActiveControl = null;
+    }
+
+    private void generateButton_Click(object sender, EventArgs e)
+    {
+      for (int i = 0; i < btnArray.Length; i++)
+      {
+        this.Controls.Remove(btnArray[i]);
+      }
+      for (int i = 0; i < labelArray.Length; i++)
+      {
+        this.Controls.Remove(labelArray[i]);
+      }
+      HowManyWords();
+      BoardSetUp();
+      InsertWords();
+      InsertWordsToFind();
     }
   }
   static class Extensions
