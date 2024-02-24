@@ -146,8 +146,7 @@ namespace wordsearch
         {
           btnArray[i, j] = new System.Windows.Forms.Button();
           btnArray[i, j].Tag = (i * intColumns) + j;
-          btnArray[i, j].Image = imageList1.Images[0];
-          btnArray[i, j].Image.Tag = false; // not selected
+          btnArray[i, j].Image = imageList1.Images[0]; // unselected
           btnArray[i, j].Text = "";
           btnArray[i, j].Width = 40; // width of button
           btnArray[i, j].Height = 40; // height of button
@@ -300,8 +299,8 @@ namespace wordsearch
 			firstButtonClicked[1] = Convert.ToInt32(btn.Tag) / intColumns;
 			firstButtonClicked[2] = Convert.ToInt32(btn.Tag) % intColumns;
 			buttonsClicked.Add(firstButtonClicked[0]);
+      btn.Image = imageList1.Images[1]; // selected
 			Control control = (Control)sender;
-      label1.Text = firstButtonClicked[0].ToString();
 			if (control.Capture)
 			{
 				control.Capture = false;
@@ -315,7 +314,6 @@ namespace wordsearch
 			{
 				Button btn = (Button)sender;
         currentButtonClicked[0] = Convert.ToInt32(btn.Tag);
-				label1.Text = currentButtonClicked[0].ToString();
 				currentButtonClicked[1] = Convert.ToInt32(btn.Tag) / intColumns;
 				currentButtonClicked[2] = Convert.ToInt32(btn.Tag) % intColumns;
 				if (currentButtonClicked[0] != buttonsClicked.Last() && !buttonsClicked.Contains(currentButtonClicked[0]) && buttonsClicked.Count > 0) // gain a button
@@ -344,7 +342,8 @@ namespace wordsearch
             foreach (int buttonClicked in buttonsClicked)
             {
               btnArray[buttonClicked / intColumns, buttonClicked % intColumns].BackColor = Color.LightGray;
-            }
+							btnArray[buttonClicked / intColumns, buttonClicked % intColumns].Image = imageList1.Images[0]; // not selected
+						}
 						buttonsClicked.Clear();
 						if (currentButtonClicked[0] > firstButtonClicked[0])
 						{
@@ -352,6 +351,7 @@ namespace wordsearch
 							{
                 btnArray[i / intColumns, i % intColumns].BackColor = randomColor;
                 buttonsClicked.Add(i);
+								btnArray[i / intColumns, i % intColumns].Image = imageList1.Images[1]; // selected
 							}
 						}
 						else
@@ -360,6 +360,7 @@ namespace wordsearch
 							{
 								btnArray[i / intColumns, i % intColumns].BackColor = randomColor;
 								buttonsClicked.Add(i);
+								btnArray[i / intColumns, i % intColumns].Image = imageList1.Images[1]; // selected
 							}
 						}
 					}
@@ -375,13 +376,16 @@ namespace wordsearch
 				}
 			}
 		}
+
 		public void btn_MouseUp(Object sender, MouseEventArgs e)
     {
 			isMouseDown = false;
       foreach (int buttonClicked in buttonsClicked) // highlights word and unclicks them
       {
         btnArray[buttonClicked / intColumns, buttonClicked % intColumns].BackColor = Color.LightGray;
-      }
+				btnArray[buttonClicked / intColumns, buttonClicked % intColumns].Image = imageList1.Images[0]; // not selected
+
+			}
 			List<string> lettersHighlighted = new List<string>();
 			foreach (int buttonClicked in buttonsClicked)
 			{
