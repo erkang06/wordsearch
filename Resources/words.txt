@@ -35,7 +35,7 @@ stairs
 celery
 janet
 quirky
-khake
+khaki
 chiffon
 grease
 golden

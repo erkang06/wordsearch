@@ -120,8 +120,8 @@ namespace wordsearch.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -------------&gt; WELCOME TO MY OBJECTIVELY BAD WORDSEARCH &lt;-------------
-        ///If you have come here, I can safely assume that you have been able to choose how many numbers you&apos;d like in your wordsearch. To use the wordsearch, you click on each letter cuz they&apos;re all buttons lmao. If you click all the letters of a word and no other letters, the letters of that word will change colour and become unselected in the case of multiple words sharing a letter like in an actual wordsearch lmao. To generate a new wordsearch [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to -----------&gt; WELCOME TO MY OBJECTIVELY BAD WORDSEARCH &lt;-----------
+        ///If you have come here, I can safely assume that you have been able to choose how many numbers you&apos;d like in your wordsearch. To use the wordsearch, you click on each letter cuz they&apos;re all buttons lmao. If you click all the letters of a word and no other letters, the letters of that word will change colour and become unselected in the case of multiple words sharing a letter like in an actual wordsearch lmao. To generate a new wordsearch, cl [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string helpsheet {
             get {
@@ -167,7 +167,7 @@ namespace wordsearch.Properties {
         ///celery
         ///janet
         ///quirky
-        ///khake
+        ///khaki
         ///chiffon
         ///grease
         ///golden
