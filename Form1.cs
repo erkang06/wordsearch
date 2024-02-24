@@ -380,7 +380,7 @@ namespace wordsearch
 		public void btn_MouseUp(Object sender, MouseEventArgs e)
     {
 			isMouseDown = false;
-      foreach (int buttonClicked in buttonsClicked) // highlights word and unclicks them
+      foreach (int buttonClicked in buttonsClicked) // unhighlights word and unclicks them
       {
         btnArray[buttonClicked / intColumns, buttonClicked % intColumns].BackColor = Color.LightGray;
 				btnArray[buttonClicked / intColumns, buttonClicked % intColumns].Image = imageList1.Images[0]; // not selected
@@ -403,7 +403,6 @@ namespace wordsearch
 					btnArray[buttonClicked / intColumns, buttonClicked % intColumns].Image = imageList1.Images[0];
 					btnArray[buttonClicked / intColumns, buttonClicked % intColumns].Image.Tag = false;
 				}
-				buttonsClicked.Clear();
 				int index = Array.IndexOf(wordsUsed, wordFound);
 				labelArray[index].ForeColor = Color.Red;
 				wordsUsed[index] = "";
@@ -421,6 +420,7 @@ namespace wordsearch
 					MessageBox.Show("You found all the words!", "Wordsearch");
 				}
 			}
+			buttonsClicked.Clear(); // no matter what that silly list has to be cleared
 		}
 
     private void printButton_Click(object sender, EventArgs e)
