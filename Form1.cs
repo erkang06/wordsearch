@@ -79,18 +79,36 @@ namespace wordsearch
 				}
 			} while (intColumns < 10 || intColumns > 20);
       btnArray = new System.Windows.Forms.Button[intRows, intColumns];
+			this.Size = new System.Drawing.Size((40*intColumns) + 20, (40*intRows) + 230);
 		}
     void HowManyWords()
     {
       string input;
       int intInput = 0;
+      int maxWordsAllowed;
+			if (btnArray.Length > 300)
+			{
+				maxWordsAllowed = 20;
+			}
+			else if (btnArray.Length > 200)
+			{
+				maxWordsAllowed = 15;
+			}
+			else if (btnArray.Length > 150)
+      {
+        maxWordsAllowed = 10;
+      }
+      else
+      {
+        maxWordsAllowed = 8;
+      }
       do
       {
-        input = Microsoft.VisualBasic.Interaction.InputBox("How many words would you like in your wordsearch?\nChoose between 5-15", "Wordsearch", "10");
+        input = Microsoft.VisualBasic.Interaction.InputBox($"How many words would you like in your wordsearch?\nChoose between 5-{maxWordsAllowed.ToString()}", "Wordsearch", "5");
         try
         {
           intInput = Convert.ToInt32(input);
-          if (intInput < 5 || intInput > 15)
+          if (intInput < 5 || intInput > maxWordsAllowed)
           {
             MessageBox.Show("Input not within specified range, try again", "Wordsearch");
           }
@@ -99,14 +117,14 @@ namespace wordsearch
         {
           if (input == null || input == "") // basos idc if u wanna play or not ur gonna make a wordsearch
           {
-            intInput = 10;
+            intInput = 5;
           }
           else
           {
             MessageBox.Show("Input not a number, try again", "Wordsearch");
           }
         }
-      } while (intInput < 5 || intInput > 15);
+      } while (intInput < 5 || intInput > maxWordsAllowed);
       wordsUsed = new string[intInput];
       labelArray = new System.Windows.Forms.Label[intInput];
     }
@@ -197,8 +215,8 @@ namespace wordsearch
 
     void InsertWordsToFind() // basos the list of words you wanna find at the bottom of a wordsearch yk
     {
-      int xPos = 20;
-      int yPos = 630;
+      int xPos = 5;
+      int yPos = 30 + (40*btnArray.GetLength(0));
       for (int n = 0; n < labelArray.Length; n++)
       {
         labelArray[n] = new System.Windows.Forms.Label();
@@ -212,7 +230,7 @@ namespace wordsearch
         yPos += labelArray[n].Height;
         if ((n + 1) % 5 == 0) // 5 words a column so it doesnt go off the app
         {
-          yPos = 630;
+          yPos = 30 + (40 * btnArray.GetLength(0));
           xPos += labelArray[n].Width;
         }
         this.Controls.Add(labelArray[n]);
@@ -314,7 +332,7 @@ namespace wordsearch
       Graphics memoryGraphics = Graphics.FromImage(memoryImage);
       if (printDialog1.ShowDialog() == DialogResult.OK)
       {
-        memoryGraphics.CopyFromScreen(this.Location.X + 10, this.Location.Y + 58, 0, 0, s); // too much maffs dont talk abt it
+        memoryGraphics.CopyFromScreen(this.Location.X + 10, this.Location.Y + 48, 0, 0, s); // too much maffs dont talk abt it
         try { printDocument1.Print(); }
         catch { MessageBox.Show("Wordsearch wasn't able to print", "Wordsearch"); }
       }
