@@ -117,13 +117,13 @@ namespace wordsearch
       int yPos = 25; // toolbar thingy innit
       for (int i = 0; i < btnArray.GetLength(0); i++) // rows
       {
-        for (int j = 0; i < btnArray.GetLength(1); i++) // columns
+				for (int j = 0; j < btnArray.GetLength(1); j++) // columns
         {
           btnArray[i, j] = new System.Windows.Forms.Button();
           btnArray[i, j].Tag = (i*15)+j;
           btnArray[i, j].Image = imageList1.Images[0];
           btnArray[i, j].Image.Tag = false; // not selected
-          btnArray[i, j].Text = "!";
+          btnArray[i, j].Text = "";
           btnArray[i, j].Width = 40; // width of button
           btnArray[i, j].Height = 40; // height of button
           btnArray[i, j].Left = xPos;
@@ -134,7 +134,7 @@ namespace wordsearch
           this.Controls.Add(btnArray[i, j]); // add button to form
           xPos += btnArray[i, j].Width;
           btnArray[i, j].MouseDown += new System.Windows.Forms.MouseEventHandler(ClickButton);
-        }
+				}
         xPos = 0;
         yPos += 40;
       }
@@ -144,7 +144,7 @@ namespace wordsearch
     {
       string[] wordArray = Resources.words.Split("\n");
       string randomWord;
-      int orientation, startXPos, startYPos, currentXPos, currentYPos;
+      int orientation, startRow, startColumn, currentRow, currentColumn;
       bool accWorks;
       for (int i = 0; i < wordsUsed.Length; i++)
       {
@@ -157,33 +157,33 @@ namespace wordsearch
         {
           accWorks = true;
           orientation = orientations[random.Next(orientations.Length)];
-					startXPos = random.Next(btnArray.GetLength(1)); // column number
-					startYPos = random.Next(btnArray.GetLength(0)); // row number
-          currentXPos = startXPos;
-          currentYPos = startYPos;
+					startRow = random.Next(btnArray.GetLength(0));
+					startColumn = random.Next(btnArray.GetLength(1));
+          currentRow = startRow;
+          currentColumn = startColumn;
           foreach (char letter in wordsUsed[i]) // checks if word can fit in right
           {
-            if (currentXPos < 0 || currentXPos > 14 || currentYPos < 0 || currentYPos > 14) // if out of bounds
+            if (currentRow < 0 || currentRow > btnArray.GetLength(0)-1 || currentColumn < 0 || currentColumn > btnArray.GetLength(1)-1) // if out of bounds
             {
               accWorks = false;
               break;
             }
-            else if (btnArray[currentXPos, currentYPos].Text != letter.ToString().ToUpper() && btnArray[currentXPos, currentYPos].Text != "!") // if letter in square u want is unusable
+            else if (btnArray[currentRow, currentColumn].Text != letter.ToString().ToUpper() && btnArray[currentRow, currentColumn].Text != "") // if letter in square u want is unusable
             {
               accWorks = false;
               break;
             }
-            currentXPos += orientation % 15;
-            currentYPos += orientation / 15;
+            currentRow += orientation % 15;
+            currentColumn += orientation / 15;
           }
         } while (accWorks == false);
-				currentXPos = startXPos;
-				currentYPos = startYPos;
+				currentRow = startRow;
+				currentColumn = startColumn;
 				foreach (char letter in wordsUsed[i]) // acc shove it onto the board
         {
-          btnArray[currentXPos, currentYPos].Text = letter.ToString().ToUpper();
-					currentXPos += orientation % 15;
-					currentYPos += orientation / 15;
+          btnArray[currentRow, currentColumn].Text = letter.ToString().ToUpper();
+					currentRow += orientation % 15;
+					currentColumn += orientation / 15;
 				}
       }
       foreach (Button btn in btnArray)
@@ -337,7 +337,7 @@ namespace wordsearch
     {
 			for (int i = 0; i < btnArray.GetLength(0); i++) // rows
 			{
-        for (int j = 0; i < btnArray.GetLength(1); i++) // columns
+        for (int j = 0; j < btnArray.GetLength(1); j++) // columns
         {
 					this.Controls.Remove(btnArray[i, j]);
 				}
