@@ -22,15 +22,16 @@ namespace wordsearch
     Font listFont = new System.Drawing.Font("Trebuchet MS", 14F);
     Color randomColor;
 		string[] wordsUsed; // words acc in the wordsearch grid
-    int[] orientations = { -16, -15, -14, -1, 1, 14, 15, 16 }; // all the orientations that the word could be in // only used in insert words cuz its under the assumption that its a 15x15 board
     List<int> buttonsClicked = new List<int>(); // letters that have been selected on the grid
     int[] firstButtonClicked = new int[3];
 		int[] currentButtonClicked = new int[3]; // helps make the draggable part
 		Bitmap memoryImage; // printy bit
+
     public Form1()
     {
       InitializeComponent();
     }
+
     void sizeOfGrid()
     {
 			string rows; // how many rows in the wordsearch
@@ -85,6 +86,7 @@ namespace wordsearch
 				}
 			} while (intColumns < 10 || intColumns > 20);
 		}
+
     void HowManyWords()
     {
       string stringHowManyWords;
@@ -156,7 +158,6 @@ namespace wordsearch
           btnArray[i, j].Font = wordSearchFont;
           this.Controls.Add(btnArray[i, j]); // add button to form
           xPos += btnArray[i, j].Width;
-          /*btnArray[i, j].MouseDown += new System.Windows.Forms.MouseEventHandler(ClickButton);*/
 					btnArray[i, j].MouseDown += new System.Windows.Forms.MouseEventHandler(btn_MouseDown);
           btnArray[i, j].MouseMove += new System.Windows.Forms.MouseEventHandler(btn_MouseMove);
           btnArray[i, j].MouseUp += new System.Windows.Forms.MouseEventHandler(btn_MouseUp);
@@ -166,11 +167,45 @@ namespace wordsearch
       }
     }
 
+    int[] FindOrientation() // its so bougie ik but we live
+    {
+      int[] orientation = new int[2];
+      switch (random.Next(8))
+      {
+        case (0):
+          orientation = new [] { -1, -1 };
+          break;
+				case (1):
+					orientation = new[] { -1, 0 };
+					break;
+				case (2):
+					orientation = new[] { -1, 1 };
+					break;
+				case (3):
+					orientation = new[] { 0, -1 };
+					break;
+				case (4):
+					orientation = new[] { 0, 1 };
+					break;
+				case (5):
+					orientation = new[] { 1, -1 };
+					break;
+				case (6):
+					orientation = new[] { 1, 0 };
+					break;
+				case (7):
+					orientation = new[] { 1, 1 };
+					break;
+			}
+      return orientation;
+    }
+
     void InsertWords()
     {
       string[] wordArray = Resources.words.Split("\n");
       string randomWord;
-      int orientation, startRow, startColumn, currentRow, currentColumn;
+      int[] orientation;
+      int startRow, startColumn, currentRow, currentColumn;
       bool accWorks;
       for (int i = 0; i < wordsUsed.Length; i++)
       {
@@ -182,7 +217,7 @@ namespace wordsearch
         do // put the word in the board
         {
           accWorks = true;
-          orientation = orientations[random.Next(orientations.Length)];
+          orientation = FindOrientation();
 					startRow = random.Next(btnArray.GetLength(0));
 					startColumn = random.Next(btnArray.GetLength(1));
           currentRow = startRow;
@@ -199,8 +234,8 @@ namespace wordsearch
               accWorks = false;
               break;
             }
-            currentRow += orientation % 15;
-            currentColumn += orientation / 15;
+            currentRow += orientation[0];
+            currentColumn += orientation[1];
           }
         } while (accWorks == false);
 				currentRow = startRow;
@@ -208,8 +243,8 @@ namespace wordsearch
 				foreach (char letter in wordsUsed[i]) // acc shove it onto the board
         {
           btnArray[currentRow, currentColumn].Text = letter.ToString().ToUpper();
-					currentRow += orientation % 15;
-					currentColumn += orientation / 15;
+					currentRow += orientation[0];
+					currentColumn += orientation[1];
 				}
       }
       foreach (Button btn in btnArray)
@@ -383,82 +418,6 @@ namespace wordsearch
 				}
 			}
 		}
-
-		public void ClickButton(Object sender, MouseEventArgs e)
-    {
-      Button btn = (Button)sender;
-      int btnNum = Convert.ToInt32(btn.Tag);
-      switch (btn.Image.Tag)
-      {
-        case true: // unselect letter
-          buttonsClicked.Remove(btnNum);
-          btn.Image = imageList1.Images[0];
-          btn.Image.Tag = false;
-          break;
-        case false: // select letter
-          buttonsClicked.Add(btnNum);
-          btn.Image = imageList1.Images[1];
-          btn.Image.Tag = true;
-          buttonsClicked.Sort();
-          break;
-      }
-      this.ActiveControl = null;
-      if (buttonsClicked.Count > 1) // cant check words below 1 letter
-      {
-        if (orientations.Contains(buttonsClicked[1] - buttonsClicked[0]))
-        {
-          bool buttonsInALine = true;
-          int orientation = buttonsClicked[1] - buttonsClicked[0];
-          for (int i = 1; i < buttonsClicked.Count; i++)
-          {
-            if (buttonsClicked[i] - buttonsClicked[i - 1] != orientation)
-            {
-              buttonsInALine = false;
-              break;
-            }
-          }
-          if (buttonsInALine) // only checks if word is in list if theyre alr in a line
-          {
-            List<string> lettersHighlighted = new List<string>();
-            foreach (int buttonClicked in buttonsClicked)
-            {
-              lettersHighlighted.Add(btnArray[buttonClicked / 15, buttonClicked % 15].Text.ToLower());
-            }
-            IEnumerable<string> lettersHighlightedReversed = lettersHighlighted.AsEnumerable().Reverse(); // reversable words (reversing a list doesnt return anything in c# its so weird)
-            if (wordsUsed.Contains(string.Join("", lettersHighlighted)) || wordsUsed.Contains(string.Join("", lettersHighlightedReversed))) // if an actual word is found
-            {
-              string wordFound; // word acc found in the wordsearch; can be in 2 directions
-              if (wordsUsed.Contains(string.Join("", lettersHighlighted))) { wordFound = string.Join("", lettersHighlighted); }
-              else { wordFound = string.Join("", lettersHighlightedReversed); }
-              randomColor = Extensions.GetColour();
-              foreach (int buttonClicked in buttonsClicked) // highlights word and unclicks them
-              {
-                btnArray[buttonClicked / 15, buttonClicked % 15].ForeColor = randomColor;
-                btnArray[buttonClicked / 15, buttonClicked % 15].Image = imageList1.Images[0];
-                btnArray[buttonClicked / 15, buttonClicked % 15].Image.Tag = false;
-              }
-              buttonsClicked.Clear();
-              int index = Array.IndexOf(wordsUsed, wordFound);
-              labelArray[index].ForeColor = Color.Red;
-              wordsUsed[index] = "";
-              bool allWordsFound = true;
-              foreach (string word in wordsUsed)
-              {
-                if (word != "")
-                {
-                  allWordsFound = false;
-                  break;
-                }
-              }
-              if (allWordsFound) // checks if all words have been found
-              {
-                MessageBox.Show("You found all the words!", "Wordsearch");
-              }
-            }
-          }
-        }
-      }
-    }
 
     private void printButton_Click(object sender, EventArgs e)
     {
