@@ -22,9 +22,11 @@ namespace wordsearch
     Font listFont = new System.Drawing.Font("Trebuchet MS", 14F);
     Color randomColor;
 		string[] wordsUsed; // words acc in the wordsearch grid
-    int[] orientations = { -16, -15, -14, -1, 1, 14, 15, 16 }; // all the orientations that the word could be in
+    int[] orientations = { -16, -15, -14, -1, 1, 14, 15, 16 }; // all the orientations that the word could be in // only used in insert words cuz its under the assumption that its a 15x15 board
     List<int> buttonsClicked = new List<int>(); // letters that have been selected on the grid
-    Bitmap memoryImage; // printy bit
+    int[] firstButtonClicked = new int[3];
+		int[] currentButtonClicked = new int[3]; // helps make the draggable part
+		Bitmap memoryImage; // printy bit
     public Form1()
     {
       InitializeComponent();
@@ -141,7 +143,7 @@ namespace wordsearch
 				for (int j = 0; j < btnArray.GetLength(1); j++) // columns
         {
           btnArray[i, j] = new System.Windows.Forms.Button();
-          btnArray[i, j].Tag = (i*15)+j;
+          btnArray[i, j].Tag = (i * intColumns) + j;
           btnArray[i, j].Image = imageList1.Images[0];
           btnArray[i, j].Image.Tag = false; // not selected
           btnArray[i, j].Text = "";
@@ -154,9 +156,12 @@ namespace wordsearch
           btnArray[i, j].Font = wordSearchFont;
           this.Controls.Add(btnArray[i, j]); // add button to form
           xPos += btnArray[i, j].Width;
-          btnArray[i, j].MouseDown += new System.Windows.Forms.MouseEventHandler(ClickButton);
+          /*btnArray[i, j].MouseDown += new System.Windows.Forms.MouseEventHandler(ClickButton);*/
+					btnArray[i, j].MouseDown += new System.Windows.Forms.MouseEventHandler(btn_MouseDown);
+          btnArray[i, j].MouseMove += new System.Windows.Forms.MouseEventHandler(btn_MouseMove);
+          btnArray[i, j].MouseUp += new System.Windows.Forms.MouseEventHandler(btn_MouseUp);
 				}
-        xPos = 0;
+				xPos = 0;
         yPos += 40;
       }
     }
@@ -250,7 +255,136 @@ namespace wordsearch
       InsertWordsToFind(); // i was gonna just redirect this to the generate button but its too much faff lmao
     }
 
-    public void ClickButton(Object sender, MouseEventArgs e)
+		public void btn_MouseDown(Object sender, MouseEventArgs e)
+		{
+			randomColor = Extensions.GetColour();
+			isMouseDown = true;
+			Button btn = (Button)sender;
+			btn.BackColor = randomColor;
+			firstButtonClicked[0] = Convert.ToInt32(btn.Tag);
+			firstButtonClicked[1] = Convert.ToInt32(btn.Tag) / intColumns;
+			firstButtonClicked[2] = Convert.ToInt32(btn.Tag) % intColumns;
+			buttonsClicked.Add(firstButtonClicked[0]);
+			Control control = (Control)sender;
+      label1.Text = firstButtonClicked[0].ToString();
+			if (control.Capture)
+			{
+				control.Capture = false;
+			}
+			this.ActiveControl = null;
+		}
+
+		public void btn_MouseMove(Object sender, MouseEventArgs e)
+		{
+			if (isMouseDown == true)
+			{
+				Button btn = (Button)sender;
+        currentButtonClicked[0] = Convert.ToInt32(btn.Tag);
+				label1.Text = currentButtonClicked[0].ToString();
+				currentButtonClicked[1] = Convert.ToInt32(btn.Tag) / intColumns;
+				currentButtonClicked[2] = Convert.ToInt32(btn.Tag) % intColumns;
+				if (currentButtonClicked[0] != buttonsClicked.Last() && !buttonsClicked.Contains(currentButtonClicked[0]) && buttonsClicked.Count > 0) // gain a button
+				{
+					int rowDiff = currentButtonClicked[1] - firstButtonClicked[1];
+					int columnDiff = currentButtonClicked[2] - firstButtonClicked[2];
+          int orientation = 0;
+					if (rowDiff == 0) // horizontal
+          {
+            orientation = 1;
+					}
+          else if (columnDiff == 0) // vertical
+          {
+						orientation = intColumns;
+					}
+          else if (rowDiff == columnDiff) // negative diagonal
+          {
+						orientation = intColumns + 1;
+					}
+          else if (rowDiff == -columnDiff) // positive diagonal
+          {
+						orientation = intColumns - 1;
+					}
+          if (orientation != 0)
+					{
+            foreach (int buttonClicked in buttonsClicked)
+            {
+              btnArray[buttonClicked / intColumns, buttonClicked % intColumns].BackColor = Color.LightGray;
+            }
+						buttonsClicked.Clear();
+						if (currentButtonClicked[0] > firstButtonClicked[0])
+						{
+							for (int i = firstButtonClicked[0]; i <= currentButtonClicked[0]; i += orientation)
+							{
+                btnArray[i / intColumns, i % intColumns].BackColor = randomColor;
+                buttonsClicked.Add(i);
+							}
+						}
+						else
+						{
+							for (int i = firstButtonClicked[0]; i >= currentButtonClicked[0]; i -= orientation)
+							{
+								btnArray[i / intColumns, i % intColumns].BackColor = randomColor;
+								buttonsClicked.Add(i);
+							}
+						}
+					}
+				}
+				else if (currentButtonClicked[0] != buttonsClicked.Last() && buttonsClicked.Contains(currentButtonClicked[0]) && buttonsClicked.Count > 1)
+				{
+					int index = buttonsClicked.IndexOf(currentButtonClicked[0]) + 1;
+					while (buttonsClicked.Count > index)
+					{
+						btnArray[buttonsClicked.Last() / intColumns, buttonsClicked.Last() % intColumns].BackColor = Color.LightGray;
+						buttonsClicked.Remove(buttonsClicked.Last());
+					}
+				}
+			}
+		}
+		public void btn_MouseUp(Object sender, MouseEventArgs e)
+    {
+			isMouseDown = false;
+      foreach (int buttonClicked in buttonsClicked) // highlights word and unclicks them
+      {
+        btnArray[buttonClicked / intColumns, buttonClicked % intColumns].BackColor = Color.LightGray;
+      }
+			List<string> lettersHighlighted = new List<string>();
+			foreach (int buttonClicked in buttonsClicked)
+			{
+				lettersHighlighted.Add(btnArray[buttonClicked / intColumns, buttonClicked % intColumns].Text.ToLower());
+			}
+			IEnumerable<string> lettersHighlightedReversed = lettersHighlighted.AsEnumerable().Reverse(); // reversable words (reversing a list doesnt return anything in c# its so weird)
+			if (wordsUsed.Contains(string.Join("", lettersHighlighted)) || wordsUsed.Contains(string.Join("", lettersHighlightedReversed))) // if an actual word is found
+			{
+				string wordFound; // word acc found in the wordsearch; can be in 2 directions
+				if (wordsUsed.Contains(string.Join("", lettersHighlighted))) { wordFound = string.Join("", lettersHighlighted); }
+				else { wordFound = string.Join("", lettersHighlightedReversed); }
+				foreach (int buttonClicked in buttonsClicked) // highlights word and unclicks them
+				{
+					btnArray[buttonClicked / intColumns, buttonClicked % intColumns].ForeColor = randomColor;
+					btnArray[buttonClicked / intColumns, buttonClicked % intColumns].Image = imageList1.Images[0];
+					btnArray[buttonClicked / intColumns, buttonClicked % intColumns].Image.Tag = false;
+				}
+				buttonsClicked.Clear();
+				int index = Array.IndexOf(wordsUsed, wordFound);
+				labelArray[index].ForeColor = Color.Red;
+				wordsUsed[index] = "";
+				bool allWordsFound = true;
+				foreach (string word in wordsUsed)
+				{
+					if (word != "")
+					{
+						allWordsFound = false;
+						break;
+					}
+				}
+				if (allWordsFound) // checks if all words have been found
+				{
+					MessageBox.Show("You found all the words!", "Wordsearch");
+				}
+			}
+		}
+
+		public void ClickButton(Object sender, MouseEventArgs e)
     {
       Button btn = (Button)sender;
       int btnNum = Convert.ToInt32(btn.Tag);

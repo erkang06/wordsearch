@@ -37,6 +37,7 @@
 			generateButton = new ToolStripButton();
 			printButton = new ToolStripButton();
 			helpButton = new ToolStripButton();
+			label1 = new Label();
 			toolStrip1.SuspendLayout();
 			SuspendLayout();
 			// 
@@ -104,11 +105,21 @@
 			helpButton.ToolTipText = "Help and instructions";
 			helpButton.Click += helpButton_Click;
 			// 
+			// label1
+			// 
+			label1.AutoSize = true;
+			label1.Location = new Point(546, 770);
+			label1.Name = "label1";
+			label1.Size = new Size(13, 15);
+			label1.TabIndex = 2;
+			label1.Text = "0";
+			// 
 			// Form1
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(600, 797);
+			Controls.Add(label1);
 			Controls.Add(toolStrip1);
 			ForeColor = SystemColors.ControlText;
 			FormBorderStyle = FormBorderStyle.Fixed3D;
@@ -131,5 +142,6 @@
     private ToolStripButton printButton;
     private ToolStripButton generateButton;
     private ToolStripButton helpButton;
-  }
+		private Label label1;
+	}
 }
