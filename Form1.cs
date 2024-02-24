@@ -12,12 +12,12 @@ namespace wordsearch
   public partial class Form1 : Form
   {
     Random random = new Random();
-    System.Windows.Forms.Button[] btnArray = new System.Windows.Forms.Button[225]; // wordsearch grid
-    System.Windows.Forms.Label[] labelArray; // shows words to find
-    string[,] wordsearchLetterGrid = new string[15, 15]; // actual letters per button
+    System.Windows.Forms.Button[,] btnArray; // wordsearch grid but just the buttons // REMEMBER ITS ROW NUMBER THEN COLUMN NUMBER
+    System.Windows.Forms.Label[] labelArray; // shows the list of words u wanna find
     Font wordSearchFont = new System.Drawing.Font("Trebuchet MS", 20F);
     Font listFont = new System.Drawing.Font("Trebuchet MS", 14F);
-    string[] wordsUsed; // words acc in the wordsearch grid
+    Color randomColor;
+		string[] wordsUsed; // words acc in the wordsearch grid
     int[] orientations = { -16, -15, -14, -1, 1, 14, 15, 16 }; // all the orientations that the word could be in
     List<int> buttonsClicked = new List<int>(); // letters that have been selected on the grid
     Bitmap memoryImage; // printy bit
@@ -25,7 +25,61 @@ namespace wordsearch
     {
       InitializeComponent();
     }
+    void sizeOfGrid()
+    {
+			string rows; // how many rows in the wordsearch
+      int intRows = 0;
+			do
+			{
+				rows = Microsoft.VisualBasic.Interaction.InputBox("How many rows would you like in your wordsearch?\nChoose between 10-20", "Wordsearch", "15");
+				try
+				{
+          intRows = Convert.ToInt32(rows);
+					if (intRows < 10 || intRows > 20)
+					{
+						MessageBox.Show("Input not within specified range, try again", "Wordsearch");
+					}
+				}
+				catch
+				{
+					if (rows == null || rows == "") // basos idc if u wanna play or not ur gonna make a board
+					{
+						intRows = 10;
+					}
+					else
+					{
+						MessageBox.Show("Input not a number, try again", "Wordsearch");
+					}
+				}
+			} while (intRows < 10 || intRows > 20);
 
+			string columns;// how many columns in the wordsearch
+			int intColumns = 0;
+			do
+			{
+				columns = Microsoft.VisualBasic.Interaction.InputBox("How many columns would you like in your wordsearch?\nChoose between 10-20", "Wordsearch", "15");
+				try
+				{
+					intColumns = Convert.ToInt32(columns);
+					if (intColumns < 10 || intColumns > 20)
+					{
+						MessageBox.Show("Input not within specified range, try again", "Wordsearch");
+					}
+				}
+				catch
+				{
+					if (columns == null || columns == "") // basos idc if u wanna play or not ur gonna make a board
+					{
+						intColumns = 10;
+					}
+					else
+					{
+						MessageBox.Show("Input not a number, try again", "Wordsearch");
+					}
+				}
+			} while (intColumns < 10 || intColumns > 20);
+      btnArray = new System.Windows.Forms.Button[intRows, intColumns];
+		}
     void HowManyWords()
     {
       string input;
@@ -43,7 +97,7 @@ namespace wordsearch
         }
         catch
         {
-          if (input == null || input == "") // basos idc if u wanna play or not ur gonna make a board
+          if (input == null || input == "") // basos idc if u wanna play or not ur gonna make a wordsearch
           {
             intInput = 10;
           }
@@ -56,43 +110,41 @@ namespace wordsearch
       wordsUsed = new string[intInput];
       labelArray = new System.Windows.Forms.Label[intInput];
     }
+    
     void BoardSetUp()
     {
       int xPos = 0;
-      int yPos = 25;
-      for (int n = 0; n < 225; n++)
+      int yPos = 25; // toolbar thingy innit
+      for (int i = 0; i < btnArray.GetLength(0); i++) // rows
       {
-        btnArray[n] = new System.Windows.Forms.Button();
-        btnArray[n].Tag = n;
-        btnArray[n].Image = imageList1.Images[0];
-        btnArray[n].Image.Tag = false; // not selected
-        btnArray[n].Text = "";
-        btnArray[n].Width = 40; // width of button
-        btnArray[n].Height = 40; // height of button
-        if (n % 15 == 0 && n != 0) // newline every 15 buttons
+        for (int j = 0; i < btnArray.GetLength(1); i++) // columns
         {
-          xPos = 0;
-          yPos += btnArray[n].Height;
+          btnArray[i, j] = new System.Windows.Forms.Button();
+          btnArray[i, j].Tag = (i*15)+j;
+          btnArray[i, j].Image = imageList1.Images[0];
+          btnArray[i, j].Image.Tag = false; // not selected
+          btnArray[i, j].Text = "!";
+          btnArray[i, j].Width = 40; // width of button
+          btnArray[i, j].Height = 40; // height of button
+          btnArray[i, j].Left = xPos;
+          btnArray[i, j].Top = yPos;
+          btnArray[i, j].BackColor = Color.LightGray;
+          btnArray[i, j].TabStop = false;
+          btnArray[i, j].Font = wordSearchFont;
+          this.Controls.Add(btnArray[i, j]); // add button to form
+          xPos += btnArray[i, j].Width;
+          btnArray[i, j].MouseDown += new System.Windows.Forms.MouseEventHandler(ClickButton);
         }
-        btnArray[n].Left = xPos;
-        btnArray[n].Top = yPos;
-        btnArray[n].BackColor = Color.LightGray;
-        btnArray[n].TabStop = false;
-        btnArray[n].Font = wordSearchFont;
-        this.Controls.Add(btnArray[n]); // add button to form
-        xPos += btnArray[n].Width;
-        btnArray[n].MouseDown += new System.Windows.Forms.MouseEventHandler(ClickButton);
+        xPos = 0;
+        yPos += 40;
       }
     }
 
     void InsertWords()
     {
       string[] wordArray = Resources.words.Split("\n");
-      string randomWord = "";
-      int orientation = 0;
-      int startPoint = 0;
-      int currentPoint = 0;
-      int currentXPos = 0, currentYPos = 0;
+      string randomWord;
+      int orientation, startXPos, startYPos, currentXPos, currentYPos;
       bool accWorks;
       for (int i = 0; i < wordsUsed.Length; i++)
       {
@@ -105,10 +157,10 @@ namespace wordsearch
         {
           accWorks = true;
           orientation = orientations[random.Next(orientations.Length)];
-          startPoint = random.Next(btnArray.Length);
-          currentPoint = startPoint;
-          currentXPos = currentPoint % 15;
-          currentYPos = currentPoint / 15;
+					startXPos = random.Next(btnArray.GetLength(1)); // column number
+					startYPos = random.Next(btnArray.GetLength(0)); // row number
+          currentXPos = startXPos;
+          currentYPos = startYPos;
           foreach (char letter in wordsUsed[i]) // checks if word can fit in right
           {
             if (currentXPos < 0 || currentXPos > 14 || currentYPos < 0 || currentYPos > 14) // if out of bounds
@@ -116,22 +168,23 @@ namespace wordsearch
               accWorks = false;
               break;
             }
-            else if (btnArray[currentPoint].Text != letter.ToString().ToUpper() && btnArray[currentPoint].Text != "") // if letter in square u want is unusable
+            else if (btnArray[currentXPos, currentYPos].Text != letter.ToString().ToUpper() && btnArray[currentXPos, currentYPos].Text != "!") // if letter in square u want is unusable
             {
               accWorks = false;
               break;
             }
-            currentPoint += orientation;
             currentXPos += orientation % 15;
             currentYPos += orientation / 15;
           }
         } while (accWorks == false);
-        currentPoint = startPoint;
-        foreach (char letter in wordsUsed[i]) // acc shove it onto the board
+				currentXPos = startXPos;
+				currentYPos = startYPos;
+				foreach (char letter in wordsUsed[i]) // acc shove it onto the board
         {
-          btnArray[currentPoint].Text = letter.ToString().ToUpper();
-          currentPoint += orientation;
-        }
+          btnArray[currentXPos, currentYPos].Text = letter.ToString().ToUpper();
+					currentXPos += orientation % 15;
+					currentYPos += orientation / 15;
+				}
       }
       foreach (Button btn in btnArray)
       {
@@ -169,6 +222,7 @@ namespace wordsearch
     private void Form1_Load(object sender, EventArgs e) // FORM LOAD RIGHT HERE
     {
       MessageBox.Show("Welcome to my objectively bad wordsearch", "Wordsearch");
+      sizeOfGrid();
       HowManyWords();
       BoardSetUp();
       InsertWords();
@@ -213,20 +267,20 @@ namespace wordsearch
             List<string> lettersHighlighted = new List<string>();
             foreach (int buttonClicked in buttonsClicked)
             {
-              lettersHighlighted.Add(btnArray[buttonClicked].Text.ToLower());
+              lettersHighlighted.Add(btnArray[buttonClicked / 15, buttonClicked % 15].Text.ToLower());
             }
             IEnumerable<string> lettersHighlightedReversed = lettersHighlighted.AsEnumerable().Reverse(); // reversable words (reversing a list doesnt return anything in c# its so weird)
             if (wordsUsed.Contains(string.Join("", lettersHighlighted)) || wordsUsed.Contains(string.Join("", lettersHighlightedReversed))) // if an actual word is found
             {
-              string wordFound;
+              string wordFound; // word acc found in the wordsearch; can be in 2 directions
               if (wordsUsed.Contains(string.Join("", lettersHighlighted))) { wordFound = string.Join("", lettersHighlighted); }
               else { wordFound = string.Join("", lettersHighlightedReversed); }
-              Color randomColor = Extensions.GetColour();
-              foreach (int button in buttonsClicked)
+              randomColor = Extensions.GetColour();
+              foreach (int buttonClicked in buttonsClicked) // highlights word and unclicks them
               {
-                btnArray[button].ForeColor = randomColor; // highlights letter
-                btnArray[button].Image = imageList1.Images[0];
-                btnArray[button].Image.Tag = false;
+                btnArray[buttonClicked / 15, buttonClicked % 15].ForeColor = randomColor;
+                btnArray[buttonClicked / 15, buttonClicked % 15].Image = imageList1.Images[0];
+                btnArray[buttonClicked / 15, buttonClicked % 15].Image.Tag = false;
               }
               buttonsClicked.Clear();
               int index = Array.IndexOf(wordsUsed, wordFound);
@@ -281,15 +335,19 @@ namespace wordsearch
 
     private void generateButton_Click(object sender, EventArgs e)
     {
-      for (int i = 0; i < btnArray.Length; i++)
-      {
-        this.Controls.Remove(btnArray[i]);
+			for (int i = 0; i < btnArray.GetLength(0); i++) // rows
+			{
+        for (int j = 0; i < btnArray.GetLength(1); i++) // columns
+        {
+					this.Controls.Remove(btnArray[i, j]);
+				}
       }
       for (int i = 0; i < labelArray.Length; i++)
       {
         this.Controls.Remove(labelArray[i]);
       }
-      HowManyWords();
+      sizeOfGrid();
+			HowManyWords();
       BoardSetUp();
       InsertWords();
       InsertWordsToFind();
