@@ -91,15 +91,15 @@ namespace wordsearch
     {
       string stringHowManyWords;
       int maxWordsAllowed;
-			if (intRows * intColumns > 300) // dont wanna crash cuz u cant overfill a board yk
+			if (intRows * intColumns >= 300) // dont wanna crash cuz u cant overfill a board yk
 			{
 				maxWordsAllowed = 20;
 			}
-			else if (intRows * intColumns > 200)
+			else if (intRows * intColumns >= 200)
 			{
 				maxWordsAllowed = 15;
 			}
-			else if (intRows * intColumns > 150)
+			else if (intRows * intColumns >= 150)
       {
         maxWordsAllowed = 10;
       }
