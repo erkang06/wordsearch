@@ -6,6 +6,8 @@ using System.Drawing.Printing;
 using System.Windows.Forms;
 using wordsearch.Properties;
 using Microsoft.VisualBasic;
+using System.Drawing.Drawing2D;
+using System.Drawing;
 
 namespace wordsearch
 {
@@ -26,8 +28,10 @@ namespace wordsearch
     int[] firstButtonClicked = new int[3];
 		int[] currentButtonClicked = new int[3]; // helps make the draggable part
 		Bitmap memoryImage; // printy bit
+    Size wordsearchSize;
 
-    public Form1()
+
+		public Form1()
     {
       InitializeComponent();
     }
@@ -371,6 +375,7 @@ namespace wordsearch
 					while (buttonsClicked.Count > index)
 					{
 						btnArray[buttonsClicked.Last() / intColumns, buttonsClicked.Last() % intColumns].BackColor = Color.LightGray;
+						btnArray[buttonsClicked.Last() / intColumns, buttonsClicked.Last() % intColumns].Image = imageList1.Images[0]; // not selected
 						buttonsClicked.Remove(buttonsClicked.Last());
 					}
 				}
@@ -427,12 +432,16 @@ namespace wordsearch
     {
       this.BackColor = Color.White;
       Graphics myGraphics = this.CreateGraphics();
-      Size s = this.Size;
-      memoryImage = new Bitmap(s.Width - 20, s.Height - 72, myGraphics);
+      wordsearchSize = this.Size;
+      memoryImage = new Bitmap(wordsearchSize.Width - 20, wordsearchSize.Height - 72, myGraphics);
       Graphics memoryGraphics = Graphics.FromImage(memoryImage);
       if (printDialog1.ShowDialog() == DialogResult.OK)
       {
-        memoryGraphics.CopyFromScreen(this.Location.X + 10, this.Location.Y + 57, 0, 0, s); // too much maffs dont talk abt it
+        memoryGraphics.CopyFromScreen(this.Location.X + 10, this.Location.Y + 57, 0, 0, wordsearchSize); // too much maffs dont talk abt it
+        if (memoryImage.Width >= 800)
+        {
+          memoryImage = new Bitmap(memoryImage, new Size(780, Convert.ToInt32((double)memoryImage.Height/memoryImage.Width * 780.0))); // resize if too big to fit on page
+				}
         try { printDocument1.Print(); }
         catch { MessageBox.Show("Wordsearch wasn't able to print", "Wordsearch"); }
       }
@@ -442,7 +451,8 @@ namespace wordsearch
 
     private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
     {
-      e.Graphics.DrawImage(memoryImage, 100, 100);
+      int xPos = (800 - memoryImage.Width) / 2;
+      e.Graphics.DrawImage(memoryImage, xPos, 100);
     }
 
     private void helpButton_Click(object sender, EventArgs e)
@@ -490,5 +500,5 @@ namespace wordsearch
       Color randomColor = Color.FromName(randomColourString);
       return randomColor;
     }
-  }
+	}
 }

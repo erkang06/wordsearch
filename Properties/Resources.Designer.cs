@@ -121,7 +121,7 @@ namespace wordsearch.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to -----------&gt; WELCOME TO MY OBJECTIVELY BAD WORDSEARCH &lt;-----------
-        ///If you have come here, I can safely assume that you have been able to choose how many numbers you&apos;d like in your wordsearch. To use the wordsearch, you click on each letter cuz they&apos;re all buttons lmao. If you click all the letters of a word and no other letters, the letters of that word will change colour and become unselected in the case of multiple words sharing a letter like in an actual wordsearch lmao. To generate a new wordsearch, cl [rest of string was truncated]&quot;;.
+        ///If you have come here, I can safely assume that you have been able to choose how many numbers you&apos;d like in your wordsearch. To use the wordsearch, you click on a letter and drag to the end of a word before releasing. If you letters you dragged make an actual word, the letters of that word will change colour and become unselected in the case of multiple words sharing a letter like in an actual wordsearch lmao. To generate a new wordsearch,  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string helpsheet {
             get {
@@ -130,55 +130,69 @@ namespace wordsearch.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to chess
-        ///cringe
-        ///vegan
-        ///zebra
-        ///purgatory
-        ///schofield
-        ///trolley
-        ///waitrose
-        ///kelp
-        ///stapler
-        ///ozone
-        ///dynamite
+        ///   Looks up a localized string similar to aids
+        ///aldi
+        ///asda
+        ///beige
+        ///bellend
+        ///boring
         ///catalyst
-        ///venison
-        ///aids
+        ///celery
+        ///chess
+        ///chiffon
+        ///christen
+        ///cringe
+        ///data
+        ///dynamite
+        ///edible
         ///election
-        ///usage
+        ///erect
+        ///forensic
+        ///golden
+        ///grease
+        ///haters
+        ///horace
+        ///ivory
+        ///janet
+        ///jester
+        ///kelp
+        ///khaki
+        ///kingdom
+        ///kosovo
+        ///leeds
+        ///lesbian
+        ///matalan
+        ///minority
+        ///moobs
+        ///nasal
+        ///nelson
+        ///olive
+        ///ozone
+        ///papaya
+        ///philip
+        ///potato
+        ///power
         ///privilege
+        ///purgatory
+        ///queencard
+        ///quirky
+        ///recipe
         ///respect
         ///retainer
-        ///vulva
-        ///jester
-        ///christen
-        ///xoxo
-        ///shrek
-        ///potato
-        ///vanessa
-        ///kingdom
-        ///treasure
-        ///sixteen
-        ///zamn
-        ///forensic
-        ///data
-        ///stairs
-        ///celery
-        ///janet
-        ///quirky
-        ///khaki
-        ///chiffon
-        ///grease
-        ///golden
-        ///power
-        ///papaya
-        ///spring
-        ///tomato
-        ///olive
         ///salmon
-        ///ivory
-        ///beige.
+        ///schofield
+        ///shrek
+        ///sixteen
+        ///spring
+        ///stairs
+        ///stapler
+        ///stress
+        ///tomato
+        ///trashy
+        ///treasure
+        ///trolley
+        ///unicycle
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string words {
             get {

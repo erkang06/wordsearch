@@ -113,6 +113,7 @@
 			ForeColor = SystemColors.ControlText;
 			FormBorderStyle = FormBorderStyle.Fixed3D;
 			Icon = (Icon)resources.GetObject("$this.Icon");
+			MaximizeBox = false;
 			Name = "Form1";
 			Text = "Wordsearch";
 			Load += Form1_Load;
