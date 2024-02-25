@@ -1,24 +1,24 @@
 ﻿namespace wordsearch
 {
-  partial class Form1
-  {
-    /// <summary>
-    ///  Required designer variable.
-    /// </summary>
-    private System.ComponentModel.IContainer components = null;
+	partial class Form1
+	{
+		/// <summary>
+		///  Required designer variable.
+		/// </summary>
+		private System.ComponentModel.IContainer components = null;
 
-    /// <summary>
-    ///  Clean up any resources being used.
-    /// </summary>
-    /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-    protected override void Dispose(bool disposing)
-    {
-      if (disposing && (components != null))
-      {
-        components.Dispose();
-      }
-      base.Dispose(disposing);
-    }
+		/// <summary>
+		///  Clean up any resources being used.
+		/// </summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && (components != null))
+			{
+				components.Dispose();
+			}
+			base.Dispose(disposing);
+		}
 
 		#region Windows Form Designer generated code
 
@@ -126,11 +126,11 @@
 		#endregion
 
 		private ImageList imageList1;
-    private System.Drawing.Printing.PrintDocument printDocument1;
-    private PrintDialog printDialog1;
-    private ToolStrip toolStrip1;
-    private ToolStripButton printButton;
-    private ToolStripButton generateButton;
-    private ToolStripButton helpButton;
+		private System.Drawing.Printing.PrintDocument printDocument1;
+		private PrintDialog printDialog1;
+		private ToolStrip toolStrip1;
+		private ToolStripButton printButton;
+		private ToolStripButton generateButton;
+		private ToolStripButton helpButton;
 	}
 }
