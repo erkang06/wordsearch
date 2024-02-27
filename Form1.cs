@@ -176,38 +176,44 @@ namespace wordsearch
 			string randomWord;
 			int[] orientation;
 			int startRow, startColumn, currentRow, currentColumn;
-			bool accWorks;
+			bool accWorks = true;
 			for (int i = 0; i < wordsUsed.Length; i++)
 			{
-				do // find a word
+				do // only here just in case word rly doesnt wanna fit
 				{
-					randomWord = wordArray[random.Next(wordArray.Length)].Trim(); // imagine newlines
-				} while (wordsUsed.Contains(randomWord));
-				wordsUsed[i] = randomWord;
-				do // put the word in the board
-				{
-					accWorks = true;
-					orientation = FindOrientation();
-					startRow = random.Next(btnArray.GetLength(0));
-					startColumn = random.Next(btnArray.GetLength(1));
-					currentRow = startRow;
-					currentColumn = startColumn;
-					foreach (char letter in wordsUsed[i]) // checks if word can fit in right
+					do // find a word
 					{
-						if (currentRow < 0 || currentRow > btnArray.GetLength(0)-1 || currentColumn < 0 || currentColumn > btnArray.GetLength(1)-1) // if out of bounds
+						randomWord = wordArray[random.Next(wordArray.Length)].Trim(); // imagine newlines
+					} while (wordsUsed.Contains(randomWord));
+					int numberOfTries = 0;
+					do // put the word in the board
+					{
+						accWorks = true;
+						orientation = FindOrientation();
+						startRow = random.Next(btnArray.GetLength(0));
+						startColumn = random.Next(btnArray.GetLength(1));
+						currentRow = startRow;
+						currentColumn = startColumn;
+						foreach (char letter in randomWord) // checks if word can fit in right
 						{
-							accWorks = false;
-							break;
+							if (currentRow < 0 || currentRow > btnArray.GetLength(0) - 1 || currentColumn < 0 || currentColumn > btnArray.GetLength(1) - 1) // if out of bounds
+							{
+								accWorks = false;
+								numberOfTries++;
+								break;
+							}
+							else if (btnArray[currentRow, currentColumn].Text != letter.ToString().ToUpper() && btnArray[currentRow, currentColumn].Text != "") // if square u want is unusable
+							{
+								accWorks = false;
+								numberOfTries++;
+								break;
+							}
+							currentRow += orientation[0];
+							currentColumn += orientation[1];
 						}
-						else if (btnArray[currentRow, currentColumn].Text != letter.ToString().ToUpper() && btnArray[currentRow, currentColumn].Text != "") // if letter in square u want is unusable
-						{
-							accWorks = false;
-							break;
-						}
-						currentRow += orientation[0];
-						currentColumn += orientation[1];
-					}
+					} while (accWorks == false || numberOfTries < 50); // if number of tries is greater than 50 itll find a new word instead of trying it again
 				} while (accWorks == false);
+				wordsUsed[i] = randomWord; // finally put word into list now it acc fits fine
 				currentRow = startRow;
 				currentColumn = startColumn;
 				foreach (char letter in wordsUsed[i]) // acc shove it onto the board
@@ -219,7 +225,7 @@ namespace wordsearch
 			}
 			foreach (Button btn in btnArray)
 			{
-				if (btn.Text == "")
+				if (btn.Text == "") // shove a letter in if blank 
 				{
 					btn.Text = Extensions.GetLetter();
 				}
