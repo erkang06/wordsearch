@@ -28,59 +28,34 @@ namespace wordsearch
 			InitializeComponent();
 		}
 
-		void sizeOfGrid()
+		int sizeOfGrid(string dimension)
 		{
-			string rows; // how many rows in the wordsearch
-			// int intRows = 0; need to be global now
+			string value; // how many rows in the wordsearch
+			int intValue = 0;
 			do
 			{
-				rows = Microsoft.VisualBasic.Interaction.InputBox("How many rows would you like in your wordsearch?\nChoose between 10-20", "Wordsearch", "15");
+				value = Microsoft.VisualBasic.Interaction.InputBox($"How many {dimension} would you like in your wordsearch?\nChoose between 10-20", "Wordsearch", "15"); // https://stackoverflow.com/questions/10797774/messagebox-with-input-field
 				try
 				{
-					intRows = Convert.ToInt32(rows);
-					if (intRows < 10 || intRows > 20)
+					intValue = Convert.ToInt32(value);
+					if (intValue < 10 || intValue > 20)
 					{
 						MessageBox.Show("Input not within specified range, try again", "Wordsearch");
 					}
 				}
 				catch
 				{
-					if (rows == null || rows == "") // basos idc if u wanna play or not ur gonna make a board
+					if (value == null || value == "") // basos idc if u wanna play or not ur gonna make a board
 					{
-						intRows = 10;
+						intValue = 10;
 					}
 					else
 					{
 						MessageBox.Show("Input not a number, try again", "Wordsearch");
 					}
 				}
-			} while (intRows < 10 || intRows > 20);
-
-			string columns;// how many columns in the wordsearch
-			// int intColumns = 0; need to be global now
-			do
-			{
-				columns = Microsoft.VisualBasic.Interaction.InputBox("How many columns would you like in your wordsearch?\nChoose between 10-20", "Wordsearch", "15");
-				try
-				{
-					intColumns = Convert.ToInt32(columns);
-					if (intColumns < 10 || intColumns > 20)
-					{
-						MessageBox.Show("Input not within specified range, try again", "Wordsearch");
-					}
-				}
-				catch
-				{
-					if (columns == null || columns == "") // basos idc if u wanna play or not ur gonna make a board
-					{
-						intColumns = 10;
-					}
-					else
-					{
-						MessageBox.Show("Input not a number, try again", "Wordsearch");
-					}
-				}
-			} while (intColumns < 10 || intColumns > 20);
+			} while (intValue < 10 || intValue > 20);
+			return intValue;
 		}
 
 		void HowManyWords()
@@ -278,11 +253,7 @@ namespace wordsearch
 		private void Form1_Load(object sender, EventArgs e) // FORM LOAD RIGHT HERE
 		{
 			MessageBox.Show("Welcome to my objectively bad wordsearch", "Wordsearch");
-			sizeOfGrid();
-			HowManyWords();
-			BoardSetUp();
-			InsertWords();
-			InsertWordsToFind(); // i was gonna just redirect this to the generate button but its too much faff lmao
+			WordsearchSetUp("new"); // completely from scratch
 		}
 
 		public void btn_MouseDown(Object sender, MouseEventArgs e)
@@ -335,13 +306,13 @@ namespace wordsearch
 					}
 					if (orientation != 0)
 					{
-						foreach (int buttonClicked in buttonsClicked)
+						foreach (int buttonClicked in buttonsClicked) // unselect currently selected buttons
 						{
 							btnArray[buttonClicked / intColumns, buttonClicked % intColumns].BackColor = Color.LightGray;
 							btnArray[buttonClicked / intColumns, buttonClicked % intColumns].Image = imageList1.Images[0]; // not selected
 						}
 						buttonsClicked.Clear();
-						if (currentButtonClicked[0] > firstButtonClicked[0])
+						if (currentButtonClicked[0] > firstButtonClicked[0]) // front to back
 						{
 							for (int i = firstButtonClicked[0]; i <= currentButtonClicked[0]; i += orientation)
 							{
@@ -350,7 +321,7 @@ namespace wordsearch
 								btnArray[i / intColumns, i % intColumns].Image = imageList1.Images[1]; // selected
 							}
 						}
-						else
+						else // back to front
 						{
 							for (int i = firstButtonClicked[0]; i >= currentButtonClicked[0]; i -= orientation)
 							{
@@ -419,7 +390,7 @@ namespace wordsearch
 			}
 			buttonsClicked.Clear(); // no matter what that silly list has to be cleared
 		}
-
+		
 		private void printButton_Click(object sender, EventArgs e)
 		{
 			this.BackColor = Color.White;
@@ -455,29 +426,39 @@ namespace wordsearch
 
 		private void generateButton_Click(object sender, EventArgs e)
 		{
-			sizeOfGrid();
+			WordsearchSetUp("generate"); // pressing the generate button
+		}
+
+		void WordsearchSetUp(string type)
+		{
+			intRows = sizeOfGrid("rows");
+			intColumns = sizeOfGrid("columns");
 			HowManyWords();
-			for (int i = 0; i < btnArray.GetLength(0); i++) // rows
+			if (type == "generate")
 			{
-				for (int j = 0; j < btnArray.GetLength(1); j++) // columns
+				for (int i = 0; i < btnArray.GetLength(0); i++) // rows
 				{
-					this.Controls.Remove(btnArray[i, j]);
+					for (int j = 0; j < btnArray.GetLength(1); j++) // columns
+					{
+						this.Controls.Remove(btnArray[i, j]);
+					}
 				}
-			}
-			for (int i = 0; i < labelArray.Length; i++)
-			{
-				this.Controls.Remove(labelArray[i]);
+				for (int i = 0; i < labelArray.Length; i++)
+				{
+					this.Controls.Remove(labelArray[i]);
+				}
 			}
 			BoardSetUp();
 			InsertWords();
 			InsertWordsToFind();
 		}
 	}
+
 	static class Extensions
 	{
 		static Random random = new Random();
 		static string[] colours = Resources.colours.Split("\n");
-		public static string GetLetter()
+		public static string GetLetter() // https://stackoverflow.com/questions/15249138/pick-random-char
 		{
 			// This method returns a random uppercase letter.
 			// ... Between 'a' and 'z' inclusive.
