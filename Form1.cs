@@ -21,6 +21,7 @@ namespace wordsearch
 		int[] currentButtonClicked = new int[3]; // helps make the draggable part
 		Bitmap memoryImage; // printy bit
 		Size wordsearchSize;
+		string wordSet; // list of words used in wordsearch
 
 
 		public Form1()
@@ -102,7 +103,7 @@ namespace wordsearch
 				}
 			} while (intHowManyWords < 5 || intHowManyWords > maxWordsAllowed);
 		}
-		
+
 		void BoardSetUp()
 		{
 			this.Size = new System.Drawing.Size((40 * intColumns) + 20, (40 * intRows) + 230); // this stuff is all here for aesthetics yk
@@ -143,28 +144,28 @@ namespace wordsearch
 			switch (random.Next(8))
 			{
 				case (0):
-					orientation = new [] { -1, -1 };
+					orientation = [-1, -1];
 					break;
 				case (1):
-					orientation = new[] { -1, 0 };
+					orientation = [-1, 0];
 					break;
 				case (2):
-					orientation = new[] { -1, 1 };
+					orientation = [-1, 1];
 					break;
 				case (3):
-					orientation = new[] { 0, -1 };
+					orientation = [0, -1];
 					break;
 				case (4):
-					orientation = new[] { 0, 1 };
+					orientation = [0, 1];
 					break;
 				case (5):
-					orientation = new[] { 1, -1 };
+					orientation = [1, -1];
 					break;
 				case (6):
-					orientation = new[] { 1, 0 };
+					orientation = [1, 0];
 					break;
 				case (7):
-					orientation = new[] { 1, 1 };
+					orientation = [1, 1];
 					break;
 			}
 			return orientation;
@@ -172,7 +173,7 @@ namespace wordsearch
 
 		void InsertWords()
 		{
-			string[] wordArray = Resources.words.Split("\n");
+			string[] wordArray = wordSet.Split("\n");
 			string randomWord;
 			int[] orientation;
 			int startRow, startColumn, currentRow, currentColumn;
@@ -235,7 +236,7 @@ namespace wordsearch
 		void InsertWordsToFind() // basos the list of words you wanna find at the bottom of a wordsearch yk
 		{
 			int xPos = 5;
-			int yPos = 30 + (40*btnArray.GetLength(0));
+			int yPos = 30 + (40 * btnArray.GetLength(0));
 			for (int n = 0; n < labelArray.Length; n++)
 			{
 				labelArray[n] = new System.Windows.Forms.Label();
@@ -259,8 +260,10 @@ namespace wordsearch
 		private void Form1_Load(object sender, EventArgs e) // FORM LOAD RIGHT HERE
 		{
 			MessageBox.Show("Welcome to my objectively bad wordsearch", "Wordsearch");
+			wordSet = Resources.regular;
 			WordsearchSetUp("new"); // completely from scratch
 		}
+
 
 		public void btn_MouseDown(Object sender, MouseEventArgs e)
 		{
@@ -396,7 +399,7 @@ namespace wordsearch
 			}
 			buttonsClicked.Clear(); // no matter what that silly list has to be cleared
 		}
-		
+
 		private void printButton_Click(object sender, EventArgs e)
 		{
 			this.BackColor = Color.White;
@@ -409,7 +412,7 @@ namespace wordsearch
 				memoryGraphics.CopyFromScreen(this.Location.X + 10, this.Location.Y + 57, 0, 0, wordsearchSize); // too much maffs dont talk abt it
 				if (memoryImage.Width >= 800)
 				{
-					memoryImage = new Bitmap(memoryImage, new Size(780, Convert.ToInt32((double)memoryImage.Height/memoryImage.Width * 780.0))); // resize if too big to fit on page
+					memoryImage = new Bitmap(memoryImage, new Size(780, Convert.ToInt32((double)memoryImage.Height / memoryImage.Width * 780.0))); // resize if too big to fit on page
 				}
 				try { printDocument1.Print(); }
 				catch { MessageBox.Show("Wordsearch wasn't able to print", "Wordsearch"); }
@@ -457,6 +460,42 @@ namespace wordsearch
 			BoardSetUp();
 			InsertWords();
 			InsertWordsToFind();
+		}
+
+		private void regularToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			wordSet = Resources.regular;
+			MessageBox.Show("Wordsearch will load in with regular wordset on next generation", "Wordsearch");
+		}
+
+		private void animalsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			wordSet = Resources.animals;
+			MessageBox.Show("Wordsearch will load in with animals wordset on next generation", "Wordsearch");
+		}
+
+		private void foodToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			wordSet = Resources.food;
+			MessageBox.Show("Wordsearch will load in with food wordset on next generation", "Wordsearch");
+		}
+
+		private void fruitsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			wordSet = Resources.fruits;
+			MessageBox.Show("Wordsearch will load in with fruits wordset on next generation", "Wordsearch");
+		}
+
+		private void vegetablesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			wordSet = Resources.vegetables;
+			MessageBox.Show("Wordsearch will load in with vegetables wordset on next generation", "Wordsearch");
+		}
+
+		private void countriesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			wordSet = Resources.countries;
+			MessageBox.Show("Wordsearch will load in with countries wordset on next generation", "Wordsearch");
 		}
 	}
 

@@ -61,6 +61,79 @@ namespace wordsearch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to dog
+        ///cow
+        ///cat
+        ///horse
+        ///donkey
+        ///tiger
+        ///lion
+        ///panther
+        ///leopard
+        ///cheetah
+        ///bear
+        ///elephant
+        ///polarbear
+        ///turtle
+        ///tortoise
+        ///crocodile
+        ///rabbit
+        ///porcupine
+        ///hare
+        ///hen
+        ///pigeon
+        ///albatross
+        ///crow
+        ///fish
+        ///dolphin
+        ///frog
+        ///whale
+        ///alligator
+        ///eagle
+        ///squirrel
+        ///ostrich
+        ///fox
+        ///goat
+        ///jackal
+        ///emu
+        ///armadillo
+        ///eel
+        ///goose
+        ///wolf
+        ///beagle
+        ///gorilla
+        ///chimpanzee
+        ///monkey
+        ///beaver
+        ///orangutan
+        ///antelope
+        ///bat
+        ///badger
+        ///giraffe
+        ///crab
+        ///panda
+        ///hamster
+        ///cobra
+        ///shark
+        ///camel
+        ///hawk
+        ///deer
+        ///chameleon
+        ///hippopotamus
+        ///jaguar
+        ///chihuahua
+        ///cobra
+        ///ibex
+        ///lizard
+        ///koala [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string animals {
+            get {
+                return ResourceManager.GetString("animals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aqua
         ///Blue
         ///BlueViolet
@@ -116,6 +189,157 @@ namespace wordsearch.Properties {
         internal static string colours {
             get {
                 return ResourceManager.GetString("colours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to afghanistan
+        ///albania
+        ///algeria
+        ///andorra
+        ///angola
+        ///argentina
+        ///armenia
+        ///australia
+        ///austria
+        ///azerbaijan
+        ///bahamas
+        ///bahrain
+        ///bangladesh
+        ///barbados
+        ///belarus
+        ///belgium
+        ///belize
+        ///benin
+        ///bhutan
+        ///bolivia
+        ///botswana
+        ///brazil
+        ///brunei
+        ///bulgaria
+        ///burkina
+        ///burundi
+        ///cambodia
+        ///cameroon
+        ///canada
+        ///chad
+        ///chile
+        ///china
+        ///colombia
+        ///comoros
+        ///congo
+        ///croatia
+        ///cuba
+        ///cyprus
+        ///denmark
+        ///djibouti
+        ///dominica
+        ///ecuador
+        ///egypt
+        ///eritrea
+        ///estonia
+        ///ethiopia
+        ///fiji
+        ///finland
+        ///france
+        ///gabon
+        ///gambia
+        ///georgia
+        ///germany
+        ///ghana
+        ///greece
+        ///grenada
+        ///guatemala
+        ///guinea        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string countries {
+            get {
+                return ResourceManager.GetString("countries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to cheese
+        ///rice
+        ///crackers
+        ///chicken
+        ///beef
+        ///potato
+        ///tomato
+        ///prawn
+        ///grape
+        ///pepper
+        ///pasta
+        ///beans
+        ///cress
+        ///chips
+        ///curry
+        ///chocolate
+        ///duck
+        ///fajita
+        ///taco
+        ///quesadilla
+        ///pizza
+        ///nugget
+        ///onion
+        ///caramel
+        ///sherbet
+        ///grease
+        ///mushroom
+        ///lasagna
+        ///sausage
+        ///milk
+        ///bread
+        ///cake
+        ///trifle
+        ///ham
+        ///beef
+        ///spam
+        ///risotto.
+        /// </summary>
+        internal static string food {
+            get {
+                return ResourceManager.GetString("food", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to apple
+        ///avocado
+        ///pear
+        ///grape
+        ///strawberry
+        ///raspberry
+        ///blueberry
+        ///blackcurrant
+        ///cherry
+        ///plum
+        ///apricot
+        ///mango
+        ///durian
+        ///cranberry
+        ///pomegranate
+        ///melon
+        ///grapefruit
+        ///pomelo
+        ///peach
+        ///date
+        ///coconut
+        ///lychee
+        ///banana
+        ///persimmon
+        ///passionfruit
+        ///guava
+        ///lemon
+        ///lime
+        ///dragonfruit
+        ///pineapple
+        ///fig
+        ///.
+        /// </summary>
+        internal static string fruits {
+            get {
+                return ResourceManager.GetString("fruits", resourceCulture);
             }
         }
         
@@ -197,9 +421,43 @@ namespace wordsearch.Properties {
         ///power
         ///privileg [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string words {
+        internal static string regular {
             get {
-                return ResourceManager.GetString("words", resourceCulture);
+                return ResourceManager.GetString("regular", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to celery
+        ///carrot
+        ///pea
+        ///onion
+        ///mushroom
+        ///broccoli
+        ///cauliflower
+        ///spinach
+        ///leek
+        ///corn
+        ///lettuce
+        ///cucumber
+        ///pepper
+        ///cabbage
+        ///beetroot
+        ///cress
+        ///kale
+        ///turnip
+        ///artichoke
+        ///squash
+        ///okra
+        ///garlic
+        ///scallion
+        ///ginger
+        ///parsnip
+        ///potato.
+        /// </summary>
+        internal static string vegetables {
+            get {
+                return ResourceManager.GetString("vegetables", resourceCulture);
             }
         }
     }

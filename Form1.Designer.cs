@@ -37,6 +37,13 @@
 			generateButton = new ToolStripButton();
 			printButton = new ToolStripButton();
 			helpButton = new ToolStripButton();
+			toolStripDropDownButton1 = new ToolStripDropDownButton();
+			regularToolStripMenuItem = new ToolStripMenuItem();
+			animalsToolStripMenuItem = new ToolStripMenuItem();
+			foodToolStripMenuItem = new ToolStripMenuItem();
+			fruitsToolStripMenuItem = new ToolStripMenuItem();
+			vegetablesToolStripMenuItem = new ToolStripMenuItem();
+			countriesToolStripMenuItem = new ToolStripMenuItem();
 			toolStrip1.SuspendLayout();
 			SuspendLayout();
 			// 
@@ -59,7 +66,7 @@
 			// toolStrip1
 			// 
 			toolStrip1.BackColor = SystemColors.ActiveBorder;
-			toolStrip1.Items.AddRange(new ToolStripItem[] { generateButton, printButton, helpButton });
+			toolStrip1.Items.AddRange(new ToolStripItem[] { generateButton, printButton, helpButton, toolStripDropDownButton1 });
 			toolStrip1.Location = new Point(0, 0);
 			toolStrip1.Name = "toolStrip1";
 			toolStrip1.Size = new Size(600, 25);
@@ -104,6 +111,58 @@
 			helpButton.ToolTipText = "Help and instructions";
 			helpButton.Click += helpButton_Click;
 			// 
+			// toolStripDropDownButton1
+			// 
+			toolStripDropDownButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
+			toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { regularToolStripMenuItem, animalsToolStripMenuItem, foodToolStripMenuItem, fruitsToolStripMenuItem, vegetablesToolStripMenuItem, countriesToolStripMenuItem });
+			toolStripDropDownButton1.Image = (Image)resources.GetObject("toolStripDropDownButton1.Image");
+			toolStripDropDownButton1.ImageTransparentColor = Color.Magenta;
+			toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+			toolStripDropDownButton1.Size = new Size(100, 22);
+			toolStripDropDownButton1.Text = "Word Category";
+			// 
+			// regularToolStripMenuItem
+			// 
+			regularToolStripMenuItem.Name = "regularToolStripMenuItem";
+			regularToolStripMenuItem.Size = new Size(180, 22);
+			regularToolStripMenuItem.Text = "Regular";
+			regularToolStripMenuItem.Click += regularToolStripMenuItem_Click;
+			// 
+			// animalsToolStripMenuItem
+			// 
+			animalsToolStripMenuItem.Name = "animalsToolStripMenuItem";
+			animalsToolStripMenuItem.Size = new Size(180, 22);
+			animalsToolStripMenuItem.Text = "Animals";
+			animalsToolStripMenuItem.Click += animalsToolStripMenuItem_Click;
+			// 
+			// foodToolStripMenuItem
+			// 
+			foodToolStripMenuItem.Name = "foodToolStripMenuItem";
+			foodToolStripMenuItem.Size = new Size(180, 22);
+			foodToolStripMenuItem.Text = "Food";
+			foodToolStripMenuItem.Click += foodToolStripMenuItem_Click;
+			// 
+			// fruitsToolStripMenuItem
+			// 
+			fruitsToolStripMenuItem.Name = "fruitsToolStripMenuItem";
+			fruitsToolStripMenuItem.Size = new Size(180, 22);
+			fruitsToolStripMenuItem.Text = "Fruits";
+			fruitsToolStripMenuItem.Click += fruitsToolStripMenuItem_Click;
+			// 
+			// vegetablesToolStripMenuItem
+			// 
+			vegetablesToolStripMenuItem.Name = "vegetablesToolStripMenuItem";
+			vegetablesToolStripMenuItem.Size = new Size(180, 22);
+			vegetablesToolStripMenuItem.Text = "Vegetables";
+			vegetablesToolStripMenuItem.Click += vegetablesToolStripMenuItem_Click;
+			// 
+			// countriesToolStripMenuItem
+			// 
+			countriesToolStripMenuItem.Name = "countriesToolStripMenuItem";
+			countriesToolStripMenuItem.Size = new Size(180, 22);
+			countriesToolStripMenuItem.Text = "Countries";
+			countriesToolStripMenuItem.Click += countriesToolStripMenuItem_Click;
+			// 
 			// Form1
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
@@ -132,5 +191,12 @@
 		private ToolStripButton printButton;
 		private ToolStripButton generateButton;
 		private ToolStripButton helpButton;
+		private ToolStripDropDownButton toolStripDropDownButton1;
+		private ToolStripMenuItem regularToolStripMenuItem;
+		private ToolStripMenuItem animalsToolStripMenuItem;
+		private ToolStripMenuItem foodToolStripMenuItem;
+		private ToolStripMenuItem fruitsToolStripMenuItem;
+		private ToolStripMenuItem vegetablesToolStripMenuItem;
+		private ToolStripMenuItem countriesToolStripMenuItem;
 	}
 }
