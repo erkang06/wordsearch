@@ -66,10 +66,12 @@
 			// toolStrip1
 			// 
 			toolStrip1.BackColor = SystemColors.ActiveBorder;
+			toolStrip1.ImageScalingSize = new Size(24, 24);
 			toolStrip1.Items.AddRange(new ToolStripItem[] { generateButton, printButton, helpButton, toolStripDropDownButton1 });
 			toolStrip1.Location = new Point(0, 0);
 			toolStrip1.Name = "toolStrip1";
-			toolStrip1.Size = new Size(600, 25);
+			toolStrip1.Padding = new Padding(0, 0, 3, 0);
+			toolStrip1.Size = new Size(857, 38);
 			toolStrip1.TabIndex = 1;
 			toolStrip1.Text = "toolStrip1";
 			// 
@@ -80,7 +82,7 @@
 			generateButton.ImageTransparentColor = Color.Magenta;
 			generateButton.Margin = new Padding(2, 1, 2, 1);
 			generateButton.Name = "generateButton";
-			generateButton.Size = new Size(124, 23);
+			generateButton.Size = new Size(185, 36);
 			generateButton.Text = "Generate Wordsearch";
 			generateButton.ToolTipText = "Generate a new wordsearch";
 			generateButton.Click += generateButton_Click;
@@ -92,7 +94,7 @@
 			printButton.ImageTransparentColor = Color.Magenta;
 			printButton.Margin = new Padding(2, 1, 2, 1);
 			printButton.Name = "printButton";
-			printButton.Size = new Size(102, 23);
+			printButton.Size = new Size(151, 36);
 			printButton.Text = "Print Wordsearch";
 			printButton.ToolTipText = "Print out your wordsearch";
 			printButton.Click += printButton_Click;
@@ -106,72 +108,74 @@
 			helpButton.ImageTransparentColor = Color.Magenta;
 			helpButton.Margin = new Padding(2, 1, 2, 1);
 			helpButton.Name = "helpButton";
-			helpButton.Size = new Size(36, 23);
+			helpButton.Size = new Size(53, 36);
 			helpButton.Text = "Help";
 			helpButton.ToolTipText = "Help and instructions";
 			helpButton.Click += helpButton_Click;
 			// 
 			// toolStripDropDownButton1
 			// 
+			toolStripDropDownButton1.BackColor = SystemColors.ButtonShadow;
 			toolStripDropDownButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
 			toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { regularToolStripMenuItem, animalsToolStripMenuItem, foodToolStripMenuItem, fruitsToolStripMenuItem, vegetablesToolStripMenuItem, countriesToolStripMenuItem });
 			toolStripDropDownButton1.Image = (Image)resources.GetObject("toolStripDropDownButton1.Image");
 			toolStripDropDownButton1.ImageTransparentColor = Color.Magenta;
 			toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-			toolStripDropDownButton1.Size = new Size(100, 22);
+			toolStripDropDownButton1.Size = new Size(151, 33);
 			toolStripDropDownButton1.Text = "Word Category";
 			// 
 			// regularToolStripMenuItem
 			// 
 			regularToolStripMenuItem.Name = "regularToolStripMenuItem";
-			regularToolStripMenuItem.Size = new Size(180, 22);
+			regularToolStripMenuItem.Size = new Size(200, 34);
 			regularToolStripMenuItem.Text = "Regular";
 			regularToolStripMenuItem.Click += regularToolStripMenuItem_Click;
 			// 
 			// animalsToolStripMenuItem
 			// 
 			animalsToolStripMenuItem.Name = "animalsToolStripMenuItem";
-			animalsToolStripMenuItem.Size = new Size(180, 22);
+			animalsToolStripMenuItem.Size = new Size(200, 34);
 			animalsToolStripMenuItem.Text = "Animals";
 			animalsToolStripMenuItem.Click += animalsToolStripMenuItem_Click;
 			// 
 			// foodToolStripMenuItem
 			// 
 			foodToolStripMenuItem.Name = "foodToolStripMenuItem";
-			foodToolStripMenuItem.Size = new Size(180, 22);
+			foodToolStripMenuItem.Size = new Size(200, 34);
 			foodToolStripMenuItem.Text = "Food";
 			foodToolStripMenuItem.Click += foodToolStripMenuItem_Click;
 			// 
 			// fruitsToolStripMenuItem
 			// 
 			fruitsToolStripMenuItem.Name = "fruitsToolStripMenuItem";
-			fruitsToolStripMenuItem.Size = new Size(180, 22);
+			fruitsToolStripMenuItem.Size = new Size(200, 34);
 			fruitsToolStripMenuItem.Text = "Fruits";
 			fruitsToolStripMenuItem.Click += fruitsToolStripMenuItem_Click;
 			// 
 			// vegetablesToolStripMenuItem
 			// 
 			vegetablesToolStripMenuItem.Name = "vegetablesToolStripMenuItem";
-			vegetablesToolStripMenuItem.Size = new Size(180, 22);
+			vegetablesToolStripMenuItem.Size = new Size(200, 34);
 			vegetablesToolStripMenuItem.Text = "Vegetables";
 			vegetablesToolStripMenuItem.Click += vegetablesToolStripMenuItem_Click;
 			// 
 			// countriesToolStripMenuItem
 			// 
 			countriesToolStripMenuItem.Name = "countriesToolStripMenuItem";
-			countriesToolStripMenuItem.Size = new Size(180, 22);
+			countriesToolStripMenuItem.Size = new Size(200, 34);
 			countriesToolStripMenuItem.Text = "Countries";
 			countriesToolStripMenuItem.Click += countriesToolStripMenuItem_Click;
 			// 
 			// Form1
 			// 
-			AutoScaleDimensions = new SizeF(7F, 15F);
-			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(600, 797);
+			AutoScaleDimensions = new SizeF(144F, 144F);
+			AutoScaleMode = AutoScaleMode.Dpi;
+			ClientSize = new Size(857, 1046);
 			Controls.Add(toolStrip1);
 			ForeColor = SystemColors.ControlText;
 			FormBorderStyle = FormBorderStyle.Fixed3D;
 			Icon = (Icon)resources.GetObject("$this.Icon");
+			Margin = new Padding(4, 5, 4, 5);
 			MaximizeBox = false;
 			Name = "Form1";
 			Text = "Wordsearch";

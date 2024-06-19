@@ -12,17 +12,17 @@ namespace wordsearch
 		int intColumns = 0;
 		int intHowManyWords = 0;
 		bool isMouseDown = false; // dw abt it
-		Font wordSearchFont = new System.Drawing.Font("Trebuchet MS", 20F);
-		Font listFont = new System.Drawing.Font("Trebuchet MS", 14F);
+		Font wordSearchFont; // i have to set both wordsearchfont and listfont in form1_load cuz scale works weird
+		Font listFont;
 		Color randomColor;
 		string[] wordsUsed; // words acc in the wordsearch grid
 		List<int> buttonsClicked = new List<int>(); // letters that have been selected on the grid
-		int[] firstButtonClicked = new int[3];
+		int[] firstButtonClicked = new int[3]; // unique number, row number, column number
 		int[] currentButtonClicked = new int[3]; // helps make the draggable part
 		Bitmap memoryImage; // printy bit
 		Size wordsearchSize;
 		string wordSet; // list of words used in wordsearch
-
+		float scaleMultiplier; // the multiplier used if ur scales weird
 
 		public Form1()
 		{
@@ -106,12 +106,12 @@ namespace wordsearch
 
 		void BoardSetUp()
 		{
-			this.Size = new System.Drawing.Size((40 * intColumns) + 20, (40 * intRows) + 230); // this stuff is all here for aesthetics yk
+			this.Size = new System.Drawing.Size((40 * intColumns) + Convert.ToInt32((float)20 / scaleMultiplier), (40 * intRows) + 150 + Convert.ToInt32((float)80 / scaleMultiplier)); // this stuff is all here for aesthetics yk
 			btnArray = new System.Windows.Forms.Button[intRows, intColumns];
 			wordsUsed = new string[intHowManyWords];
 			labelArray = new System.Windows.Forms.Label[intHowManyWords];
 			int xPos = 0;
-			int yPos = 25; // toolbar thingy innit
+			int yPos = Convert.ToInt32(25 / scaleMultiplier); // toolbar thingy innit
 			for (int i = 0; i < btnArray.GetLength(0); i++) // rows
 			{
 				for (int j = 0; j < btnArray.GetLength(1); j++) // columns
@@ -236,7 +236,7 @@ namespace wordsearch
 		void InsertWordsToFind() // basos the list of words you wanna find at the bottom of a wordsearch yk
 		{
 			int xPos = 5;
-			int yPos = 30 + (40 * btnArray.GetLength(0));
+			int yPos = Convert.ToInt32(30 / scaleMultiplier) + (40 * btnArray.GetLength(0));
 			for (int n = 0; n < labelArray.Length; n++)
 			{
 				labelArray[n] = new System.Windows.Forms.Label();
@@ -259,6 +259,10 @@ namespace wordsearch
 
 		private void Form1_Load(object sender, EventArgs e) // FORM LOAD RIGHT HERE
 		{
+			int dpi = this.DeviceDpi; // mostly 96 dpi which is what ive worked with
+			scaleMultiplier = (float)96 / dpi;
+			wordSearchFont = new System.Drawing.Font("Trebuchet MS", Convert.ToSingle(20 * scaleMultiplier));
+			listFont = new System.Drawing.Font("Trebuchet MS", Convert.ToSingle(14 * scaleMultiplier));
 			MessageBox.Show("Welcome to my objectively bad wordsearch", "Wordsearch");
 			wordSet = Resources.regular;
 			WordsearchSetUp("new"); // completely from scratch
