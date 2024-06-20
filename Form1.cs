@@ -250,7 +250,7 @@ namespace wordsearch
 				yPos += labelArray[n].Height;
 				if ((n + 1) % 5 == 0) // 5 words a column so it doesnt go off the app
 				{
-					yPos = 30 + (40 * btnArray.GetLength(0));
+					yPos = Convert.ToInt32(30 / scaleMultiplier) + (40 * btnArray.GetLength(0));
 					xPos += labelArray[n].Width;
 				}
 				this.Controls.Add(labelArray[n]);
