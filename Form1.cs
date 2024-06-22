@@ -13,7 +13,7 @@ namespace wordsearch
 		bool isMouseDown = false; // dw abt it
 		Font wordSearchFont; // i have to set both wordsearchfont and listfont in form1_load cuz scale works weird
 		Font listFont;
-		Color randomColor;
+		Color randomColour;
 		string[] wordsUsed; // words acc in the wordsearch grid
 		List<int> buttonsClicked = new List<int>(); // letters that have been selected on the grid
 		int[] firstButtonClicked = new int[3]; // unique number, row number, column number
@@ -22,6 +22,7 @@ namespace wordsearch
 		Size wordsearchSize;
 		string wordSet; // list of words used in wordsearch
 		float scaleMultiplier; // the multiplier used if ur scales weird
+		List<Color> coloursUsed = new List<Color>(); // list of colours thatve been used on the board
 
 		public Form1()
 		{
@@ -278,10 +279,13 @@ namespace wordsearch
 
 		public void btn_MouseDown(Object sender, MouseEventArgs e)
 		{
-			randomColor = Extensions.GetColour();
+			do
+			{
+				randomColour = Extensions.GetColour();
+			} while (coloursUsed.Contains(randomColour));
 			isMouseDown = true;
 			Button btn = (Button)sender;
-			btn.BackColor = randomColor;
+			btn.BackColor = randomColour;
 			firstButtonClicked[0] = Convert.ToInt32(btn.Tag);
 			firstButtonClicked[1] = Convert.ToInt32(btn.Tag) / intColumns;
 			firstButtonClicked[2] = Convert.ToInt32(btn.Tag) % intColumns;
@@ -336,7 +340,7 @@ namespace wordsearch
 						{
 							for (int i = firstButtonClicked[0]; i <= currentButtonClicked[0]; i += orientation)
 							{
-								btnArray[i / intColumns, i % intColumns].BackColor = randomColor;
+								btnArray[i / intColumns, i % intColumns].BackColor = randomColour;
 								buttonsClicked.Add(i);
 								btnArray[i / intColumns, i % intColumns].Image = imageList1.Images[1]; // selected
 							}
@@ -345,7 +349,7 @@ namespace wordsearch
 						{
 							for (int i = firstButtonClicked[0]; i >= currentButtonClicked[0]; i -= orientation)
 							{
-								btnArray[i / intColumns, i % intColumns].BackColor = randomColor;
+								btnArray[i / intColumns, i % intColumns].BackColor = randomColour;
 								buttonsClicked.Add(i);
 								btnArray[i / intColumns, i % intColumns].Image = imageList1.Images[1]; // selected
 							}
@@ -382,12 +386,13 @@ namespace wordsearch
 			IEnumerable<string> lettersHighlightedReversed = lettersHighlighted.AsEnumerable().Reverse(); // reversable words (reversing a list doesnt return anything in c# its so weird)
 			if (wordsUsed.Contains(string.Join("", lettersHighlighted)) || wordsUsed.Contains(string.Join("", lettersHighlightedReversed))) // if an actual word is found
 			{
+				coloursUsed.Add(randomColour);
 				string wordFound; // word acc found in the wordsearch; can be in 2 directions
 				if (wordsUsed.Contains(string.Join("", lettersHighlighted))) { wordFound = string.Join("", lettersHighlighted); }
 				else { wordFound = string.Join("", lettersHighlightedReversed); }
 				foreach (int buttonClicked in buttonsClicked) // highlights word and unclicks them
 				{
-					btnArray[buttonClicked / intColumns, buttonClicked % intColumns].ForeColor = randomColor;
+					btnArray[buttonClicked / intColumns, buttonClicked % intColumns].ForeColor = randomColour;
 					btnArray[buttonClicked / intColumns, buttonClicked % intColumns].Image = imageList1.Images[0];
 					btnArray[buttonClicked / intColumns, buttonClicked % intColumns].Image.Tag = false;
 				}
@@ -451,6 +456,7 @@ namespace wordsearch
 
 		void WordsearchSetUp(string type)
 		{
+			coloursUsed.Clear();
 			intRows = sizeOfGrid("rows");
 			intColumns = sizeOfGrid("columns");
 			if (type == "generate")
@@ -525,8 +531,8 @@ namespace wordsearch
 		public static Color GetColour()
 		{
 			string randomColourString = colours[random.Next(colours.Length)].Trim();
-			Color randomColor = Color.FromName(randomColourString);
-			return randomColor;
+			Color randomColour = Color.FromName(randomColourString);
+			return randomColour;
 		}
 	}
 }
