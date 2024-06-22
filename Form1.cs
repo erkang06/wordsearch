@@ -6,8 +6,8 @@ namespace wordsearch
 	public partial class Form1 : Form
 	{
 		Random random = new Random();
-		System.Windows.Forms.Button[,] btnArray; // wordsearch grid but just the buttons // REMEMBER ITS ROW NUMBER THEN COLUMN NUMBER
-		System.Windows.Forms.Label[] labelArray; // shows the list of words u wanna find
+		Button[,] btnArray; // wordsearch grid but just the buttons // REMEMBER ITS ROW NUMBER THEN COLUMN NUMBER
+		Label[] labelArray; // shows the list of words u wanna find
 		int intRows = 0;
 		int intColumns = 0;
 		bool isMouseDown = false; // dw abt it
@@ -107,8 +107,8 @@ namespace wordsearch
 
 		void BoardSetUp()
 		{
-			this.Size = new System.Drawing.Size((40 * intColumns) + Convert.ToInt32((float)20 / scaleMultiplier), (40 * intRows) + 150 + Convert.ToInt32((float)80 / scaleMultiplier)); // this stuff is all here for aesthetics yk
-			btnArray = new System.Windows.Forms.Button[intRows, intColumns];
+			this.Size = new Size((40 * intColumns) + Convert.ToInt32((float)20 / scaleMultiplier), (40 * intRows) + 150 + Convert.ToInt32((float)80 / scaleMultiplier)); // this stuff is all here for aesthetics yk
+			btnArray = new Button[intRows, intColumns];
 			wordsUsed = new string[HowManyWords()];
 			int xPos = 0;
 			int yPos = Convert.ToInt32(25 / scaleMultiplier); // toolbar thingy innit
@@ -116,7 +116,7 @@ namespace wordsearch
 			{
 				for (int j = 0; j < btnArray.GetLength(1); j++) // columns
 				{
-					btnArray[i, j] = new System.Windows.Forms.Button();
+					btnArray[i, j] = new Button();
 					btnArray[i, j].Tag = (i * intColumns) + j;
 					btnArray[i, j].Image = imageList1.Images[0]; // unselected
 					btnArray[i, j].Text = "";
@@ -129,9 +129,9 @@ namespace wordsearch
 					btnArray[i, j].Font = wordSearchFont;
 					this.Controls.Add(btnArray[i, j]); // add button to form
 					xPos += btnArray[i, j].Width;
-					btnArray[i, j].MouseDown += new System.Windows.Forms.MouseEventHandler(btn_MouseDown);
-					btnArray[i, j].MouseMove += new System.Windows.Forms.MouseEventHandler(btn_MouseMove);
-					btnArray[i, j].MouseUp += new System.Windows.Forms.MouseEventHandler(btn_MouseUp);
+					btnArray[i, j].MouseDown += new MouseEventHandler(btn_MouseDown);
+					btnArray[i, j].MouseMove += new MouseEventHandler(btn_MouseMove);
+					btnArray[i, j].MouseUp += new MouseEventHandler(btn_MouseUp);
 				}
 				xPos = 0;
 				yPos += 40;
@@ -218,7 +218,7 @@ namespace wordsearch
 				} while (accWorks == false && failedWords < 10);
 				if (failedWords >= 10) // if there are more than 10 words that failed to fit in just skip
 				{
-					Array.Resize(ref wordsUsed, i);
+					Array.Resize(ref wordsUsed, i); // https://stackoverflow.com/questions/4840802/change-array-size
 					break;
 				}
 				wordsUsed[i] = randomWord; // finally put word into list now it acc fits fine
@@ -457,8 +457,6 @@ namespace wordsearch
 		void WordsearchSetUp(string type)
 		{
 			coloursUsed.Clear();
-			intRows = sizeOfGrid("rows");
-			intColumns = sizeOfGrid("columns");
 			if (type == "generate")
 			{
 				for (int i = 0; i < btnArray.GetLength(0); i++) // rows
@@ -473,6 +471,8 @@ namespace wordsearch
 					this.Controls.Remove(labelArray[i]);
 				}
 			}
+			intRows = sizeOfGrid("rows");
+			intColumns = sizeOfGrid("columns");
 			BoardSetUp();
 			InsertWords();
 			InsertWordsToFind();
