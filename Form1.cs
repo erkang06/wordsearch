@@ -10,7 +10,6 @@ namespace wordsearch
 		System.Windows.Forms.Label[] labelArray; // shows the list of words u wanna find
 		int intRows = 0;
 		int intColumns = 0;
-		int intHowManyWords = 0;
 		bool isMouseDown = false; // dw abt it
 		Font wordSearchFont; // i have to set both wordsearchfont and listfont in form1_load cuz scale works weird
 		Font listFont;
@@ -59,10 +58,10 @@ namespace wordsearch
 			return intValue;
 		}
 
-		void HowManyWords()
+		int HowManyWords()
 		{
 			string stringHowManyWords;
-			int maxWordsAllowed;
+			int maxWordsAllowed, intHowManyWords = 0;
 			if (intRows * intColumns >= 300) // dont wanna crash cuz u cant overfill a board yk
 			{
 				maxWordsAllowed = 20;
@@ -102,14 +101,14 @@ namespace wordsearch
 					}
 				}
 			} while (intHowManyWords < 5 || intHowManyWords > maxWordsAllowed);
+			return intHowManyWords;
 		}
 
 		void BoardSetUp()
 		{
 			this.Size = new System.Drawing.Size((40 * intColumns) + Convert.ToInt32((float)20 / scaleMultiplier), (40 * intRows) + 150 + Convert.ToInt32((float)80 / scaleMultiplier)); // this stuff is all here for aesthetics yk
 			btnArray = new System.Windows.Forms.Button[intRows, intColumns];
-			wordsUsed = new string[intHowManyWords];
-			labelArray = new System.Windows.Forms.Label[intHowManyWords];
+			wordsUsed = new string[HowManyWords()];
 			int xPos = 0;
 			int yPos = Convert.ToInt32(25 / scaleMultiplier); // toolbar thingy innit
 			for (int i = 0; i < btnArray.GetLength(0); i++) // rows
@@ -178,6 +177,7 @@ namespace wordsearch
 			int[] orientation;
 			int startRow, startColumn, currentRow, currentColumn;
 			bool accWorks = true;
+			int failedWords = 0; // number of words that just wont go in
 			for (int i = 0; i < wordsUsed.Length; i++)
 			{
 				do // only here just in case word rly doesnt wanna fit
@@ -212,8 +212,14 @@ namespace wordsearch
 							currentRow += orientation[0];
 							currentColumn += orientation[1];
 						}
-					} while (accWorks == false || numberOfTries < 50); // if number of tries is greater than 50 itll find a new word instead of trying it again
-				} while (accWorks == false);
+					} while (accWorks == false && numberOfTries < 50); // if number of tries is greater than 50 itll find a new word instead of trying it again
+					if (numberOfTries >= 50) failedWords++;
+				} while (accWorks == false && failedWords < 10);
+				if (failedWords >= 10) // if there are more than 10 words that failed to fit in just skip
+				{
+					Array.Resize(ref wordsUsed, i);
+					break;
+				}
 				wordsUsed[i] = randomWord; // finally put word into list now it acc fits fine
 				currentRow = startRow;
 				currentColumn = startColumn;
@@ -237,6 +243,7 @@ namespace wordsearch
 		{
 			int xPos = 5;
 			int yPos = Convert.ToInt32(30 / scaleMultiplier) + (40 * btnArray.GetLength(0));
+			labelArray = new System.Windows.Forms.Label[wordsUsed.Length];
 			for (int n = 0; n < labelArray.Length; n++)
 			{
 				labelArray[n] = new System.Windows.Forms.Label();
@@ -446,7 +453,6 @@ namespace wordsearch
 		{
 			intRows = sizeOfGrid("rows");
 			intColumns = sizeOfGrid("columns");
-			HowManyWords();
 			if (type == "generate")
 			{
 				for (int i = 0; i < btnArray.GetLength(0); i++) // rows
