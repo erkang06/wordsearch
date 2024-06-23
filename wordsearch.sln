@@ -3,18 +3,34 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wordsearch", "wordsearch.csproj", "{53B488DF-0917-4B10-B217-1D8EC3B834F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "wordsearch", "wordsearch.csproj", "{53B488DF-0917-4B10-B217-1D8EC3B834F6}"
+EndProject
+Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "Wordsearch Installer", "..\Wordsearch Installer\Wordsearch Installer.aiproj", "{FB869FC2-6828-4EAF-AA8A-C8D951BD09DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		All|Any CPU = All|Any CPU
 		Debug|Any CPU = Debug|Any CPU
+		DefaultBuild|Any CPU = DefaultBuild|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53B488DF-0917-4B10-B217-1D8EC3B834F6}.All|Any CPU.ActiveCfg = Release|Any CPU
+		{53B488DF-0917-4B10-B217-1D8EC3B834F6}.All|Any CPU.Build.0 = Release|Any CPU
 		{53B488DF-0917-4B10-B217-1D8EC3B834F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{53B488DF-0917-4B10-B217-1D8EC3B834F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53B488DF-0917-4B10-B217-1D8EC3B834F6}.DefaultBuild|Any CPU.ActiveCfg = Debug|Any CPU
+		{53B488DF-0917-4B10-B217-1D8EC3B834F6}.DefaultBuild|Any CPU.Build.0 = Debug|Any CPU
 		{53B488DF-0917-4B10-B217-1D8EC3B834F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53B488DF-0917-4B10-B217-1D8EC3B834F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB869FC2-6828-4EAF-AA8A-C8D951BD09DD}.All|Any CPU.ActiveCfg = DefaultBuild
+		{FB869FC2-6828-4EAF-AA8A-C8D951BD09DD}.All|Any CPU.Build.0 = DefaultBuild
+		{FB869FC2-6828-4EAF-AA8A-C8D951BD09DD}.Debug|Any CPU.ActiveCfg = DefaultBuild
+		{FB869FC2-6828-4EAF-AA8A-C8D951BD09DD}.Debug|Any CPU.Build.0 = DefaultBuild
+		{FB869FC2-6828-4EAF-AA8A-C8D951BD09DD}.DefaultBuild|Any CPU.ActiveCfg = DefaultBuild
+		{FB869FC2-6828-4EAF-AA8A-C8D951BD09DD}.DefaultBuild|Any CPU.Build.0 = DefaultBuild
+		{FB869FC2-6828-4EAF-AA8A-C8D951BD09DD}.Release|Any CPU.ActiveCfg = DefaultBuild
+		{FB869FC2-6828-4EAF-AA8A-C8D951BD09DD}.Release|Any CPU.Build.0 = DefaultBuild
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
