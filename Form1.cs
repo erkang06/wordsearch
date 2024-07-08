@@ -6,15 +6,14 @@ namespace wordsearch
 	public partial class Form1 : Form
 	{
 		Random random = new Random();
-		System.Windows.Forms.Button[,] btnArray; // wordsearch grid but just the buttons // REMEMBER ITS ROW NUMBER THEN COLUMN NUMBER
-		System.Windows.Forms.Label[] labelArray; // shows the list of words u wanna find
+		Button[,] btnArray; // wordsearch grid but just the buttons // REMEMBER ITS ROW NUMBER THEN COLUMN NUMBER
+		Label[] labelArray; // shows the list of words u wanna find
 		int intRows = 0;
 		int intColumns = 0;
-		int intHowManyWords = 0;
 		bool isMouseDown = false; // dw abt it
 		Font wordSearchFont; // i have to set both wordsearchfont and listfont in form1_load cuz scale works weird
 		Font listFont;
-		Color randomColor;
+		Color randomColour;
 		string[] wordsUsed; // words acc in the wordsearch grid
 		List<int> buttonsClicked = new List<int>(); // letters that have been selected on the grid
 		int[] firstButtonClicked = new int[3]; // unique number, row number, column number
@@ -23,6 +22,7 @@ namespace wordsearch
 		Size wordsearchSize;
 		string wordSet; // list of words used in wordsearch
 		float scaleMultiplier; // the multiplier used if ur scales weird
+		List<Color> coloursUsed = new List<Color>(); // list of colours thatve been used on the board
 
 		public Form1()
 		{
@@ -63,10 +63,10 @@ namespace wordsearch
 			return intValue;
 		}
 
-		void HowManyWords()
+		int HowManyWords()
 		{
 			string stringHowManyWords;
-			int maxWordsAllowed;
+			int maxWordsAllowed, intHowManyWords = 0;
 			if (intRows * intColumns >= 300) // dont wanna crash cuz u cant overfill a board yk
 			{
 				maxWordsAllowed = 20;
@@ -114,17 +114,16 @@ namespace wordsearch
 
 		void BoardSetUp()
 		{
-			this.Size = new System.Drawing.Size((40 * intColumns) + Convert.ToInt32((float)20 / scaleMultiplier), (40 * intRows) + 150 + Convert.ToInt32((float)80 / scaleMultiplier)); // this stuff is all here for aesthetics yk
-			btnArray = new System.Windows.Forms.Button[intRows, intColumns];
-			wordsUsed = new string[intHowManyWords];
-			labelArray = new System.Windows.Forms.Label[intHowManyWords];
+			this.Size = new Size((40 * intColumns) + Convert.ToInt32((float)20 / scaleMultiplier), (40 * intRows) + 150 + Convert.ToInt32((float)80 / scaleMultiplier)); // this stuff is all here for aesthetics yk
+			btnArray = new Button[intRows, intColumns];
+			wordsUsed = new string[HowManyWords()];
 			int xPos = 0;
 			int yPos = Convert.ToInt32(25 / scaleMultiplier); // toolbar thingy innit
 			for (int i = 0; i < btnArray.GetLength(0); i++) // rows
 			{
 				for (int j = 0; j < btnArray.GetLength(1); j++) // columns
 				{
-					btnArray[i, j] = new System.Windows.Forms.Button();
+					btnArray[i, j] = new Button();
 					btnArray[i, j].Tag = (i * intColumns) + j;
 					btnArray[i, j].Image = imageList1.Images[0]; // unselected
 					btnArray[i, j].Text = "";
@@ -137,9 +136,9 @@ namespace wordsearch
 					btnArray[i, j].Font = wordSearchFont;
 					this.Controls.Add(btnArray[i, j]); // add button to form
 					xPos += btnArray[i, j].Width;
-					btnArray[i, j].MouseDown += new System.Windows.Forms.MouseEventHandler(btn_MouseDown);
-					btnArray[i, j].MouseMove += new System.Windows.Forms.MouseEventHandler(btn_MouseMove);
-					btnArray[i, j].MouseUp += new System.Windows.Forms.MouseEventHandler(btn_MouseUp);
+					btnArray[i, j].MouseDown += new MouseEventHandler(btn_MouseDown);
+					btnArray[i, j].MouseMove += new MouseEventHandler(btn_MouseMove);
+					btnArray[i, j].MouseUp += new MouseEventHandler(btn_MouseUp);
 				}
 				xPos = 0;
 				yPos += 40;
@@ -186,6 +185,7 @@ namespace wordsearch
 			int[] orientation;
 			int startRow, startColumn, currentRow, currentColumn;
 			bool accWorks = true;
+			int failedWords = 0; // number of words that just wont go in
 			for (int i = 0; i < wordsUsed.Length; i++)
 			{
 				do // only here just in case word rly doesnt wanna fit
@@ -220,8 +220,14 @@ namespace wordsearch
 							currentRow += orientation[0];
 							currentColumn += orientation[1];
 						}
-					} while (accWorks == false || numberOfTries < 50); // if number of tries is greater than 50 itll find a new word instead of trying it again
-				} while (accWorks == false);
+					} while (accWorks == false && numberOfTries < 50); // if number of tries is greater than 50 itll find a new word instead of trying it again
+					if (numberOfTries >= 50) failedWords++;
+				} while (accWorks == false && failedWords < 10);
+				if (failedWords >= 10) // if there are more than 10 words that failed to fit in just skip
+				{
+					Array.Resize(ref wordsUsed, i); // https://stackoverflow.com/questions/4840802/change-array-size
+					break;
+				}
 				wordsUsed[i] = randomWord; // finally put word into list now it acc fits fine
 				currentRow = startRow;
 				currentColumn = startColumn;
@@ -245,6 +251,7 @@ namespace wordsearch
 		{
 			int xPos = 5;
 			int yPos = Convert.ToInt32(30 / scaleMultiplier) + (40 * btnArray.GetLength(0));
+			labelArray = new System.Windows.Forms.Label[wordsUsed.Length];
 			for (int n = 0; n < labelArray.Length; n++)
 			{
 				labelArray[n] = new System.Windows.Forms.Label();
@@ -286,10 +293,13 @@ namespace wordsearch
 
 		public void btn_MouseDown(Object sender, MouseEventArgs e)
 		{
-			randomColor = Extensions.GetColour();
+			do
+			{
+				randomColour = Extensions.GetColour();
+			} while (coloursUsed.Contains(randomColour));
 			isMouseDown = true;
 			Button btn = (Button)sender;
-			btn.BackColor = randomColor;
+			btn.BackColor = randomColour;
 			firstButtonClicked[0] = Convert.ToInt32(btn.Tag);
 			firstButtonClicked[1] = Convert.ToInt32(btn.Tag) / intColumns;
 			firstButtonClicked[2] = Convert.ToInt32(btn.Tag) % intColumns;
@@ -344,7 +354,7 @@ namespace wordsearch
 						{
 							for (int i = firstButtonClicked[0]; i <= currentButtonClicked[0]; i += orientation)
 							{
-								btnArray[i / intColumns, i % intColumns].BackColor = randomColor;
+								btnArray[i / intColumns, i % intColumns].BackColor = randomColour;
 								buttonsClicked.Add(i);
 								btnArray[i / intColumns, i % intColumns].Image = imageList1.Images[1]; // selected
 							}
@@ -353,7 +363,7 @@ namespace wordsearch
 						{
 							for (int i = firstButtonClicked[0]; i >= currentButtonClicked[0]; i -= orientation)
 							{
-								btnArray[i / intColumns, i % intColumns].BackColor = randomColor;
+								btnArray[i / intColumns, i % intColumns].BackColor = randomColour;
 								buttonsClicked.Add(i);
 								btnArray[i / intColumns, i % intColumns].Image = imageList1.Images[1]; // selected
 							}
@@ -390,12 +400,13 @@ namespace wordsearch
 			IEnumerable<string> lettersHighlightedReversed = lettersHighlighted.AsEnumerable().Reverse(); // reversable words (reversing a list doesnt return anything in c# its so weird)
 			if (wordsUsed.Contains(string.Join("", lettersHighlighted)) || wordsUsed.Contains(string.Join("", lettersHighlightedReversed))) // if an actual word is found
 			{
+				coloursUsed.Add(randomColour);
 				string wordFound; // word acc found in the wordsearch; can be in 2 directions
 				if (wordsUsed.Contains(string.Join("", lettersHighlighted))) { wordFound = string.Join("", lettersHighlighted); }
 				else { wordFound = string.Join("", lettersHighlightedReversed); }
 				foreach (int buttonClicked in buttonsClicked) // highlights word and unclicks them
 				{
-					btnArray[buttonClicked / intColumns, buttonClicked % intColumns].ForeColor = randomColor;
+					btnArray[buttonClicked / intColumns, buttonClicked % intColumns].ForeColor = randomColour;
 					btnArray[buttonClicked / intColumns, buttonClicked % intColumns].Image = imageList1.Images[0];
 					btnArray[buttonClicked / intColumns, buttonClicked % intColumns].Image.Tag = false;
 				}
@@ -459,9 +470,7 @@ namespace wordsearch
 
 		void WordsearchSetUp(string type)
 		{
-			intRows = sizeOfGrid("rows");
-			intColumns = sizeOfGrid("columns");
-			HowManyWords();
+			coloursUsed.Clear();
 			if (type == "generate")
 			{
 				for (int i = 0; i < btnArray.GetLength(0); i++) // rows
@@ -476,6 +485,8 @@ namespace wordsearch
 					this.Controls.Remove(labelArray[i]);
 				}
 			}
+			intRows = sizeOfGrid("rows");
+			intColumns = sizeOfGrid("columns");
 			BoardSetUp();
 			InsertWords();
 			InsertWordsToFind();
@@ -534,8 +545,8 @@ namespace wordsearch
 		public static Color GetColour()
 		{
 			string randomColourString = colours[random.Next(colours.Length)].Trim();
-			Color randomColor = Color.FromName(randomColourString);
-			return randomColor;
+			Color randomColour = Color.FromName(randomColourString);
+			return randomColour;
 		}
 	}
 }
