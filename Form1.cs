@@ -46,9 +46,9 @@ namespace wordsearch
 				}
 				catch
 				{
-					if (value == null || value == "") // basos idc if u wanna play or not ur gonna make a board
+					if (value == null || value == "")
 					{
-						intValue = 10;
+						break;
 					}
 					else
 					{
@@ -56,6 +56,10 @@ namespace wordsearch
 					}
 				}
 			} while (intValue < 10 || intValue > 20);
+			if (value == null || value == "")
+			{
+				Application.Exit();
+			}
 			return intValue;
 		}
 
@@ -92,9 +96,9 @@ namespace wordsearch
 				}
 				catch
 				{
-					if (stringHowManyWords == null || stringHowManyWords == "") // basos idc if u wanna play or not ur gonna make a wordsearch
+					if (stringHowManyWords == null || stringHowManyWords == "")
 					{
-						intHowManyWords = 5;
+						break;
 					}
 					else
 					{
@@ -102,6 +106,10 @@ namespace wordsearch
 					}
 				}
 			} while (intHowManyWords < 5 || intHowManyWords > maxWordsAllowed);
+			if (stringHowManyWords == null || stringHowManyWords == "")
+			{
+				Application.Exit();
+			}
 		}
 
 		void BoardSetUp()
@@ -263,9 +271,16 @@ namespace wordsearch
 			scaleMultiplier = (float)96 / dpi;
 			wordSearchFont = new System.Drawing.Font("Trebuchet MS", Convert.ToSingle(20 * scaleMultiplier));
 			listFont = new System.Drawing.Font("Trebuchet MS", Convert.ToSingle(14 * scaleMultiplier));
-			MessageBox.Show("Welcome to my objectively bad wordsearch", "Wordsearch");
-			wordSet = Resources.regular;
-			WordsearchSetUp("new"); // completely from scratch
+			DialogResult result = MessageBox.Show("Welcome to my objectively bad wordsearch", "Wordsearch");
+			if (result == DialogResult.OK)
+			{
+				wordSet = Resources.regular;
+				WordsearchSetUp("new"); // completely from scratch
+			}
+			else
+			{
+				Application.Exit();
+			}
 		}
 
 
