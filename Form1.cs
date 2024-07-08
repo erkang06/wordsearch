@@ -110,6 +110,7 @@ namespace wordsearch
 			{
 				Application.Exit();
 			}
+			return intHowManyWords;
 		}
 
 		void BoardSetUp()
